@@ -1,13 +1,15 @@
 @prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix : <MyBase/#> .
 
 :oil_product a rdfs:Class.
 :hardware a rdfs:Class.
 :process a rdfs:Class.
 :status_of_oil a rdfs:Class.
 
-:Storage            a :hardware.
+
+
 :Pump_1             a :hardware.
 :Heat_Exchanger_1   a :hardware.
 :ELDP a :hardware.
@@ -51,8 +53,15 @@
 :max_pressure a rdf:Property.
 :min_pressure a rdf:Property.
 
-:Storage :storage_object :Crude_Oil.
-:Storage :raw_material :Crude_Oil.
+
+
+
+
+
+
+:Storage    a :hardware;
+            :storage_object :Crude_Oil;
+            :raw_material :Crude_Oil.
 
 :Crude_Oil :source :Storage.
 
@@ -143,3 +152,23 @@
 :LightWeight_Сolumn  :result  :Petrol_Fraction.
 :LightWeight_Сolumn  :result  :Hydrocarbon_Gases.
 :LightWeight_Сolumn  :raw_material  :Light_Fraction_Vapors.
+
+
+
+
+
+:path a rdf:Property.
+:model_name a rdf:Property.
+:active     a rdf:Property.
+
+
+:NN_model  a rdfs:Class;
+            :path "U:\\7 семестр\\pythonProject\\Models";
+            rdfs:domain :model_name .
+
+
+
+
+:Predicate_model    a :NN_Model;
+                    :model_name "Model.h5" ;
+                    :active true .

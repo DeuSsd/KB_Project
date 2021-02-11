@@ -6,16 +6,17 @@ import sklearn
 from sklearn.utils import shuffle
 import pandas as pd
 import numpy as np
+import os
 
-n = 4
-# activation="relu"
-# activation="tanh"
-activation="relu"
-sum = 100
-d = 2
-epochs = 100
-
-while sum > 0.5:
+# while sum > 0.5:
+def learn_nn(path, name):
+    n = 4
+    # activation="relu"
+    # activation="tanh"
+    activation = "relu"
+    sum = 100
+    d = 2
+    epochs = 100
 
     deep = n
 
@@ -34,7 +35,6 @@ while sum > 0.5:
     # input_names = ["A","k","w","x"]
     # input_names = ["k","w","x"]
     input_names = ["x"]
-
     output_names = ["f"]
 
 
@@ -72,6 +72,8 @@ while sum > 0.5:
 
 
     supervised = make_supervised(data_frame)
+
+
     in_data = np.array(encode(supervised["in"]))
     out_data = np.array(encode(supervised["out"]))
 
@@ -167,16 +169,18 @@ while sum > 0.5:
         #            ],
         batch_size=32,
     )
-    model.save("Models\model.h5")
+    model.save(os.path.join(path,name))
 
 
 
-    model = k.models.load_model("Models\model.h5")
+    model = k.models.load_model(os.path.join(path,name))
+
     # plt.title("train/validation")
     # plt.plot(fit_results.history["accuracy"],label = "Train")
     # plt.plot(fit_results.history["val_accuracy"], label = "Validation")
     # plt.legend()
     # plt.show()
+
     predict = model.predict(test_x)
 
 
@@ -202,3 +206,6 @@ while sum > 0.5:
 # plt.plot(fit_results.history["val_loss"], label = "Validation")
 # plt.legend()
 # plt.show()
+
+
+def relearn(nn_name):

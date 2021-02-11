@@ -1,20 +1,6 @@
-# exec('from formula import heatQuantity')
-# exec('print(heatQuantity.heatQuantity(0, 10, 1))')
-#
-# exec('from formula import heatTime')
-# exec('print(heatTime.heatTime(10, 100))')
-#
-#
-#
-
-# import formula.plus
-from importlib import reload
-# from formula import f_plus.
-
 import sys
 
-
-def str_param(param):
+def parametrs_to_string(param):
     str_p = ""
 
     for item in param:
@@ -23,13 +9,14 @@ def str_param(param):
     str_p = str_p[:-1]
     return  str_p
 
-while True:
-    result = ''
+# while True:
+def execute():
+    result = 0
     a =input()
     b = input()
     param = [float(a),float(b)]
     fun1 = input()
-    param = str_param(param)
+    param = parametrs_to_string(param)
 
     if  "formula."+fun1 not in sys.modules:
         exec("from formula import {}".format(fun1))
@@ -37,7 +24,9 @@ while True:
         exec("reload({})".format(fun1))
 
     exec('result = {}.{}({})'.format(fun1,fun1,param))
-    print(result)
+    return result
+
+
 
 
 
