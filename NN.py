@@ -7,18 +7,22 @@ from sklearn.utils import shuffle
 import pandas as pd
 import numpy as np
 
-n = 50
+n = 4
+# activation="relu"
+# activation="tanh"
+activation="relu"
 sum = 100
-d = 10
-epochs = 40
-
+d = 2
+epochs = 100
 
 while sum > 0.5:
 
-    seed()
+    deep = n
+
+    # seed()
 
     data_frame = pd.read_csv("data.csv")
-    # data_frame = data_frame[:d*2000]
+    data_frame = data_frame[:d*100]
 
     columns = data_frame.shape[0]
 
@@ -27,8 +31,9 @@ while sum > 0.5:
     data_frame = shuffle(data_frame)
     # data_frame=data_frame.shuffle(buffer_size=1024).batch(64)
 
-    input_names = ["A","k","w","x"]
-    # input_names = ["x"]
+    # input_names = ["A","k","w","x"]
+    # input_names = ["k","w","x"]
+    input_names = ["x"]
 
     output_names = ["f"]
 
@@ -40,8 +45,7 @@ while sum > 0.5:
         max =  df.max()
 
         for column in df.columns:
-            values = df[column]
-                     # /max[column]
+            values = df[column]/max[column]
 
             result[column] = values
         return result
@@ -80,34 +84,41 @@ while sum > 0.5:
     test_y = out_data[round(columns*0.8):]
 
     model = k.Sequential()
-    print("\033[33m==========",4,n,n,1,"==========\033[34m")
+    print("\033[33m==========",len(input_names),(str(n)+",")*deep,len(output_names),"==========\033[34m")
     #
     initializer = k.initializers.TruncatedNormal(seed=seed())
 
 
 
 
-    model.add(k.layers.Dense(units = 4,
+    model.add(k.layers.Dense(units = len(input_names),
+                             input_dim=len(input_names),
                              # kernel_initializer = initializer,
                              # activation = None,
-                             activation="relu"
+                             # activation="relu",
+                             # activation="tanh",
                              ))
-
-    model.add(k.layers.Dense(units=n,
-                             # kernel_initializer = initializer,
-                             activation="relu"))
-    model.add(k.layers.Dropout(0.5))
+    for i in range(deep):
+        model.add(k.layers.Dense(units=n,
+                                 kernel_initializer = initializer,
+                                 activation=activation))
+        # model.add(k.layers.Dropout(0.5))
     #
-    model.add(k.layers.Dense(units = n,
-                             # input_dim=4,
-                             # kernel_initializer = initializer,
-                             activation= "relu"))
-    model.add(k.layers.Dropout(0.5))
-    #
-    # model.add(k.layers.Dense(units = n,
-    # #                          # kernel_initializer = initializer,
-    #                          activation= "relu"))
+    # model.add(k.layers.Dense(units=n,
+    #                          # kernel_initializer = initializer,
+    #                          activation="relu",
+    #                          # activation="tanh",
+    #                          ))
     # model.add(k.layers.Dropout(0.5))
+
+    # model.add(k.layers.Dense(units = n,
+    #                          # input_dim=4,
+    #                          # kernel_initializer = initializer,
+    #                          activation= "relu",
+    #                          # activation="tanh",
+    #                          ))
+    # model.add(k.layers.Dropout(0.5))
+
     #
     # model.add(k.layers.Dense(units=n,
     # #                          # kernel_initializer = initializer,
@@ -117,14 +128,14 @@ while sum > 0.5:
     # model.add(k.layers.Dense(units = n,
     # #                          kernel_initializer = initializer,
     #                          activation= "relu"))
-    model.add(k.layers.Dense(units = 1,
+    model.add(k.layers.Dense(units = len(output_names),
                              kernel_initializer = initializer,
                              # activation = None,
                              activation = 'linear',
                              ))
 
 
-    opt = k.optimizers.Adam(learning_rate=0.1)
+    opt = k.optimizers.Adam(learning_rate=0.01)
 
     model.compile(
         loss='mse',
@@ -152,14 +163,15 @@ while sum > 0.5:
         y=train_y,
         epochs= epochs,
         validation_split=0.2,
-        callbacks=[early_stopping
-                   ],
+        # callbacks=[early_stopping
+        #            ],
         batch_size=32,
     )
-    model.save("model.h5")
+    model.save("Models\model.h5")
 
 
-    model = k.models.load_model("model.h5")
+
+    model = k.models.load_model("Models\model.h5")
     # plt.title("train/validation")
     # plt.plot(fit_results.history["accuracy"],label = "Train")
     # plt.plot(fit_results.history["val_accuracy"], label = "Validation")
@@ -183,8 +195,8 @@ while sum > 0.5:
     result = model.evaluate(test_x,test_y)
     dict(zip(model.metrics_names, result))
     n+=1
-#
-#
+
+
 # plt.title("loss/validation")
 # plt.plot(fit_results.history["loss"],label = "Train")
 # plt.plot(fit_results.history["val_loss"], label = "Validation")

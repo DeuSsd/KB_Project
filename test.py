@@ -2,7 +2,7 @@ import keras as k
 import random
 
 import matplotlib.pyplot as plt
-model = k.models.load_model("model.h5")
+model = k.models.load_model("Models\model.h5")
 
 from math import sin
 data_x = []
@@ -20,8 +20,9 @@ x = -i
 
 while x <i:
     # f = k * x + w
-    f = A * sin(k * x + w)
-    predict = model.predict([[A,k,w,x]])
+    # f = A * sin(k * x + w)
+    f = k*x+w
+    predict = model.predict([[x]])
     n1 = predict[0][0]
     data_x.append(x)
     data_f.append(f)

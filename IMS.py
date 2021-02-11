@@ -18,7 +18,8 @@ def fun(A=1,k=1,w=0):
     while x<100:
         in_data.append(x)
         # f = k*x+w
-        f = A*sin(k*x+w)
+        # f = A*sin(k*x+w)
+        f = x*x*A+ x*k +w
         out_data.append(f)
         data.append([A,k,w,x,f])
         x+=0.5
