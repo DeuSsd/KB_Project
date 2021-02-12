@@ -159,16 +159,17 @@
 
 :path a rdf:Property.
 :model_name a rdf:Property.
+:base_model_name a rdf:Property.
 :active     a rdf:Property.
 
 
 :NN_model  a rdfs:Class;
             :path "U:\\7 семестр\\pythonProject\\Models";
-            rdfs:domain :model_name .
+            rdfs:domain :model_name ;
+            :base_model_name "Model_" .
 
 
 
-
-:Predicate_model    a :NN_Model;
-                    :model_name "Model.h5" ;
+:Predicate_model_1  a :NN_Model;
+                    :model_name "Model_1" ;
                     :active true .

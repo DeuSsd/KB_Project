@@ -37,12 +37,12 @@ def test_nn(nn_name):
     plt.xlabel("X")
     plt.ylabel("Y")
     plt.show()
-    return False
+    return False if random.randint(-10,10) > 0 else True
 
 
 if __name__ == "__main__":
 
-    # model = k.models.load_model("Models\model.h5")
+    # model = k.models.load_model("Models\model_1.h5")
     #
     from math import sin
     data_x = []
