@@ -1,175 +1,191 @@
-@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix owl:  <http://www.w3.org/2002/07/owl#> .
-@prefix : <MyBase/#> .
+@prefix MyBase: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/#> .
+@prefix rdf: <httpMyBase://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <httpMyBase://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-:oil_product a rdfs:Class.
-:hardware a rdfs:Class.
-:process a rdfs:Class.
-:status_of_oil a rdfs:Class.
+MyBase:NN_model a rdfs:Class ;
+    MyBase:base_model_name "Model_" ;
+    MyBase:path "U:\\7 семестр\\pythonProject\\Models" ;
+    rdfs:domain MyBase:model_name .
 
+MyBase:Predicate_model_1 a MyBase:NN_Model ;
+    MyBase:active true ;
+    MyBase:model_name "Model_1" .
 
+MyBase:Primary_Rectification a MyBase:process .
 
-:Pump_1             a :hardware.
-:Heat_Exchanger_1   a :hardware.
-:ELDP a :hardware.
-:Heat_Exchanger_2 a :hardware.
-:Topping_Сolumn a :hardware.
-:Petrol_Сolumn a :hardware.
-:Pump_2 a :hardware.
-:Bake a :hardware.
-:Atmospheric_Pipe_Heater a :hardware.
-:LightWeight_Сolumn a :hardware.
+MyBase:Secondary_Rectification a MyBase:process .
 
-:storage_object a :process.
-:transfer a :process.
-:heating a :process.
-:clearing a :process.
-:Primary_Rectification a :process.
-:condensation a :process.
-:Secondary_Rectification a :process.
-:Crude_Oil a :status_of_oil.
-:Heated_Crude_Oil a :status_of_oil.
-:Desalted_Crude_Oil a :status_of_oil.
-:Topped_Oil a :status_of_oil.
-:Heated_Topped_Oil a :status_of_oil.
-:Petrol_Fraction a :oil_product.
-:Light_Fraction_Vapors a :oil_product.
-:Hydrocarbon_Gases a :oil_product.
-:Masut a :oil_product.
-:Diesel_Fuel a :oil_product.
-:Kerosene a :oil_product.
+MyBase:active a rdf:Property .
 
-:storage_object a rdf:Property.
-:raw_material a rdf:Property.
-:source a rdf:Property.
-:transfer a rdf:Property.
-:source a rdf:Property.
-:purpose a rdf:Property.
-:raw_material a rdf:Property.
-:max_temp a rdf:Property.
-:min_temp a rdf:Property.
-:result a rdf:Property.
-:max_pressure a rdf:Property.
-:min_pressure a rdf:Property.
+MyBase:base_model_name a rdf:Property .
 
+MyBase:clearing a MyBase:process .
 
+MyBase:condensation a MyBase:process .
 
+MyBase:heating a MyBase:process .
 
+MyBase:max_pressure a rdf:Property .
 
+MyBase:max_temp a rdf:Property .
 
+MyBase:min_pressure a rdf:Property .
 
-:Storage    a :hardware;
-            :storage_object :Crude_Oil;
-            :raw_material :Crude_Oil.
+MyBase:min_temp a rdf:Property .
 
-:Crude_Oil :source :Storage.
+MyBase:path a rdf:Property .
 
-:Pump_1 :transfer :Crude_Oil;
-        :source :Storage;
-        :purpose :Heat_Exchanger_1;
-        :raw_material :Crude_Oil.
+MyBase:purpose a rdf:Property .
 
-:Heat_Exchanger_1    :heating :Crude_Oil;
-                    :source :Pump_1;
-                    :purpose :ELDP;
-                    :min_temp 30;
-                    :max_temp 50;
-                    :result :Heated_Crude_Oil;
-                    :raw_material :Crude_Oil.
+MyBase:raw_material a rdf:Property .
 
-:ELDP   :clearing :Crude_Oil;
-        :source :Heat_Exchanger_1;
-        :purpose :Heat_Exchanger_2;
-        :min_temp 3;
-        :max_temp 5;
-        :result :Desalted_Crude_Oil;
-        :raw_material :Crude_Oil.
+MyBase:result a rdf:Property .
 
- :Heat_Exchanger_2 :heating :Desalted_Crude_Oil.
- :Heat_Exchanger_2 :source :ELDP.
- :Heat_Exchanger_2 :purpose :Topping_Сolumn.
- :Heat_Exchanger_2 :min_temp 200.
- :Heat_Exchanger_2 :max_temp 220.
- :Heat_Exchanger_2 :result :Heated_Desalted_Crude_Oil.
- :Heat_Exchanger_2 :raw_material :Desalted_Crude_Oil.
+MyBase:source a rdf:Property .
 
+MyBase:storage_object a MyBase:process,
+        rdf:Property .
 
-:Topping_Сolumn  :Primary_Rectification  :Heated_Desalted_Crude_Oil.
-:Topping_Сolumn  :source  :Heat_Exchanger_2.
-:Topping_Сolumn  :purpose  :Petrol_Сolumn.
-:Topping_Сolumn  :purpose  :Pump_2.
-:Topping_Сolumn  :min_temp  240.
-:Topping_Сolumn  :max_temp  260.
-:Topping_Сolumn  :raw_material  :Desalted_Crude_Oil.
-:Topping_Сolumn  :raw_material  :Petrol_Fraction.
-:Topping_Сolumn  :min_pressure  0.4.
-:Topping_Сolumn  :max_pressure  0.5.
-:Topping_Сolumn  :result  :Topped_Oil.
-:Topping_Сolumn  :result  :Gasoline_Vapors.
-:Petrol_Сolumn  :condensation  :Petrol_Fraction.
-:Petrol_Сolumn  :source  :Topping_Сolumn.
-:Petrol_Сolumn  :purpose  :The_output_of_gasoline.
-:Petrol_Сolumn  :purpose  :The_output_of_hydrocarbon_gases.
-:Petrol_Сolumn  :min_temp  30.
-:Petrol_Сolumn  :max_temp  180.
-:Petrol_Сolumn  :result  :Petrol_Fraction.
-:Petrol_Сolumn  :result  :Hydrocarbon_Gases.
-:Petrol_Сolumn  :raw_material  :Gasoline_Vapors.
-:Pump_2  :transfer  :Topped_Oil.
-:Pump_2  :source  :Topping_Сolumn.
-:Pump_2  :purpose  :Bake.
-:Pump_2  :raw_material  :Topped_Oil.
-:Bake  :heating  :Topped_Oil.
-:Bake  :source  :Pump_2.
-:Bake  :purpose  :Atmospheric_Pipe_Heater.
-:Bake  :min_temp  340.
-:Bake  :max_temp  350.
-:Bake  :result  :Heated_Topped_Oil.
-:Bake  :raw_material  :Topped_Oil.
-:Atmospheric_Pipe_Heater  :Secondary_Rectification  :Heated_Topped_Oil.
-:Atmospheric_Pipe_Heater  :source  :Bake.
-:Atmospheric_Pipe_Heater  :purpose  :LightWeight_Сolumn.
-:Atmospheric_Pipe_Heater  :purpose  :The_output_of_kerosene.
-:Atmospheric_Pipe_Heater  :purpose  :The_output_of_diesel.
-:Atmospheric_Pipe_Heater  :purpose  :The_output_of_masut.
-:Atmospheric_Pipe_Heater  :min_temp  340.
-:Atmospheric_Pipe_Heater  :max_temp  355.
-:Atmospheric_Pipe_Heater  :raw_material  :Heated_Topped_Oil.
-:Atmospheric_Pipe_Heater  :raw_material  :Petrol_Fraction.
-:Atmospheric_Pipe_Heater  :min_pressure  0.15.
-:Atmospheric_Pipe_Heater  :max_pressure  0.2.
-:Atmospheric_Pipe_Heater  :result  :Kerosene.
-:Atmospheric_Pipe_Heater  :result  :Light_Fraction_Vapors.
-:Atmospheric_Pipe_Heater  :result  :Diesel_Fuel.
-:Atmospheric_Pipe_Heater  :result  :Masut.
-:LightWeight_Сolumn  :condensation  :Petrol_Fraction.
-:LightWeight_Сolumn  :source  :Atmospheric_Pipe_Heater.
-:LightWeight_Сolumn  :purpose  :The_output_of_gasoline.
-:LightWeight_Сolumn  :purpose  :The_output_of_hydrocarbon_gases.
-:LightWeight_Сolumn  :min_temp  30.
-:LightWeight_Сolumn  :max_temp  180.
-:LightWeight_Сolumn  :result  :Petrol_Fraction.
-:LightWeight_Сolumn  :result  :Hydrocarbon_Gases.
-:LightWeight_Сolumn  :raw_material  :Light_Fraction_Vapors.
+MyBase:transfer a MyBase:process,
+        rdf:Property .
 
+MyBase:Diesel_Fuel a MyBase:oil_product .
 
+MyBase:Heated_Crude_Oil a MyBase:status_of_oil .
 
+MyBase:Kerosene a MyBase:oil_product .
 
+MyBase:LightWeight_Сolumn a MyBase:hardware ;
+    MyBase:condensation MyBase:Petrol_Fraction ;
+    MyBase:max_temp 180 ;
+    MyBase:min_temp 30 ;
+    MyBase:purpose MyBase:The_output_of_gasoline,
+        MyBase:The_output_of_hydrocarbon_gases ;
+    MyBase:raw_material MyBase:Light_Fraction_Vapors ;
+    MyBase:result MyBase:Hydrocarbon_Gases,
+        MyBase:Petrol_Fraction ;
+    MyBase:source MyBase:Atmospheric_Pipe_Heater .
 
-:path a rdf:Property.
-:model_name a rdf:Property.
-:base_model_name a rdf:Property.
-:active     a rdf:Property.
+MyBase:Masut a MyBase:oil_product .
 
+MyBase:Petrol_Сolumn a MyBase:hardware ;
+    MyBase:condensation MyBase:Petrol_Fraction ;
+    MyBase:max_temp 180 ;
+    MyBase:min_temp 30 ;
+    MyBase:purpose MyBase:The_output_of_gasoline,
+        MyBase:The_output_of_hydrocarbon_gases ;
+    MyBase:raw_material MyBase:Gasoline_Vapors ;
+    MyBase:result MyBase:Hydrocarbon_Gases,
+        MyBase:Petrol_Fraction ;
+    MyBase:source MyBase:Topping_Сolumn .
 
-:NN_model  a rdfs:Class;
-            :path "U:\\7 семестр\\pythonProject\\Models";
-            rdfs:domain :model_name ;
-            :base_model_name "Model_" .
+MyBase:Pump_1 a MyBase:hardware ;
+    MyBase:purpose MyBase:Heat_Exchanger_1 ;
+    MyBase:raw_material MyBase:Crude_Oil ;
+    MyBase:source MyBase:Storage ;
+    MyBase:transfer MyBase:Crude_Oil .
 
+MyBase:model_name a rdf:Property .
 
+MyBase:Atmospheric_Pipe_Heater a MyBase:hardware ;
+    MyBase:Secondary_Rectification MyBase:Heated_Topped_Oil ;
+    MyBase:max_pressure 0.2 ;
+    MyBase:max_temp 355 ;
+    MyBase:min_pressure 0.15 ;
+    MyBase:min_temp 340 ;
+    MyBase:purpose MyBase:LightWeight_Сolumn,
+        MyBase:The_output_of_diesel,
+        MyBase:The_output_of_kerosene,
+        MyBase:The_output_of_masut ;
+    MyBase:raw_material MyBase:Heated_Topped_Oil,
+        MyBase:Petrol_Fraction ;
+    MyBase:result MyBase:Diesel_Fuel,
+        MyBase:Kerosene,
+        MyBase:Light_Fraction_Vapors,
+        MyBase:Masut ;
+    MyBase:source MyBase:Bake .
 
-:Predicate_model_1  a :NN_Model;
-                    :model_name "Model_1" ;
-                    :active true .
+MyBase:Bake a MyBase:hardware ;
+    MyBase:heating MyBase:Topped_Oil ;
+    MyBase:max_temp 350 ;
+    MyBase:min_temp 340 ;
+    MyBase:purpose MyBase:Atmospheric_Pipe_Heater ;
+    MyBase:raw_material MyBase:Topped_Oil ;
+    MyBase:result MyBase:Heated_Topped_Oil ;
+    MyBase:source MyBase:Pump_2 .
+
+MyBase:ELDP a MyBase:hardware ;
+    MyBase:clearing MyBase:Crude_Oil ;
+    MyBase:max_temp 5 ;
+    MyBase:min_temp 3 ;
+    MyBase:purpose MyBase:Heat_Exchanger_2 ;
+    MyBase:raw_material MyBase:Crude_Oil ;
+    MyBase:result MyBase:Desalted_Crude_Oil ;
+    MyBase:source MyBase:Heat_Exchanger_1 .
+
+MyBase:Heat_Exchanger_1 a MyBase:hardware ;
+    MyBase:heating MyBase:Crude_Oil ;
+    MyBase:max_temp 50 ;
+    MyBase:min_temp 30 ;
+    MyBase:purpose MyBase:ELDP ;
+    MyBase:raw_material MyBase:Crude_Oil ;
+    MyBase:result MyBase:Heated_Crude_Oil ;
+    MyBase:source MyBase:Pump_1 .
+
+MyBase:Heat_Exchanger_2 a MyBase:hardware ;
+    MyBase:heating MyBase:Desalted_Crude_Oil ;
+    MyBase:max_temp 220 ;
+    MyBase:min_temp 200 ;
+    MyBase:purpose MyBase:Topping_Сolumn ;
+    MyBase:raw_material MyBase:Desalted_Crude_Oil ;
+    MyBase:result MyBase:Heated_Desalted_Crude_Oil ;
+    MyBase:source MyBase:ELDP .
+
+MyBase:Hydrocarbon_Gases a MyBase:oil_product .
+
+MyBase:Light_Fraction_Vapors a MyBase:oil_product .
+
+MyBase:Pump_2 a MyBase:hardware ;
+    MyBase:purpose MyBase:Bake ;
+    MyBase:raw_material MyBase:Topped_Oil ;
+    MyBase:source MyBase:Topping_Сolumn ;
+    MyBase:transfer MyBase:Topped_Oil .
+
+MyBase:Storage a MyBase:hardware ;
+    MyBase:raw_material MyBase:Crude_Oil ;
+    MyBase:storage_object MyBase:Crude_Oil .
+
+MyBase:Heated_Topped_Oil a MyBase:status_of_oil .
+
+MyBase:Topping_Сolumn a MyBase:hardware ;
+    MyBase:Primary_Rectification MyBase:Heated_Desalted_Crude_Oil ;
+    MyBase:max_pressure 0.5 ;
+    MyBase:max_temp 260 ;
+    MyBase:min_pressure 0.4 ;
+    MyBase:min_temp 240 ;
+    MyBase:purpose MyBase:Petrol_Сolumn,
+        MyBase:Pump_2 ;
+    MyBase:raw_material MyBase:Desalted_Crude_Oil,
+        MyBase:Petrol_Fraction ;
+    MyBase:result MyBase:Gasoline_Vapors,
+        MyBase:Topped_Oil ;
+    MyBase:source MyBase:Heat_Exchanger_2 .
+
+MyBase:Desalted_Crude_Oil a MyBase:status_of_oil .
+
+MyBase:Topped_Oil a MyBase:status_of_oil .
+
+MyBase:status_of_oil a rdfs:Class .
+
+MyBase:Petrol_Fraction a MyBase:oil_product .
+
+MyBase:oil_product a rdfs:Class .
+
+MyBase:process a rdfs:Class .
+
+MyBase:Crude_Oil a MyBase:status_of_oil ;
+    MyBase:source MyBase:Storage .
+
+MyBase:hardware a rdfs:Class .
+

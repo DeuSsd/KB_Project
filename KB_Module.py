@@ -23,7 +23,7 @@ q = g.query(
     SELECT ?path_model
     WHERE  
     {
-        :NN_model :path ?path_model .
+        URN:NN_model URN:path ?path_model .
     }
     ''')
 
@@ -36,17 +36,30 @@ print("path",path)
 
 from NN import *
 from test import *
+
 # print("путь к нейросетевым моделям",path_model)
 
 def change_status(new_name):
+    # sampleRelations = ['similarTo', 'brotherOf', 'capitalOf']
 
-    data='''
-    <U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject#'''+new_name+'''>  <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject#NN_Model>.
-    <U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject#'''+new_name+'''> <U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject#model_name> "'''+new_name+'''" .
-    <U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject#'''+new_name+'''> <U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject#active true> .
-    '''
 
-    g.parse(data,format='n3')
+    # general relations
+    # gen = Namespace('U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject#')
+    # g.bind('MyBASE', Namespace('U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject#').)
+
+    # Adding predefined relationships
+    # g.add(( new_name, , new_name))
+    # for rel in sampleRelations:
+    #     rel = URIRef('http://abcd.com/general#' + rel)
+    #     g.add((MyBase, RDFS.subClassOf, OWL.ObjectProperty))
+
+   # data='''
+   #  # <U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject#'''+new_name+'''>  <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject#NN_Model>.
+   #  # <U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject#'''+new_name+'''> <U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject#model_name> "'''+new_name+'''" .
+   #  # <U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject#'''+new_name+'''> <U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject#active true> .
+   #  '''
+
+    # g.parse(data,format='n3')
 
 while True:
     # узнаём есть ли нейросетевые модели в базе и если есть забираем последнюю
@@ -58,8 +71,8 @@ while True:
         SELECT ?instance
         WHERE  
         {
-            ?instance a :NN_Model .
-            ?instance :active true .
+            ?instance a URN:NN_Model .
+            ?instance URN:active true .
         }
         ''')
 
@@ -74,7 +87,7 @@ while True:
             SELECT ?model_name
             WHERE  
             {
-                :NN_model :base_model_name ?model_name.
+                URN:NN_model URN:base_model_name ?model_name.
                     }
                     ''')
 
@@ -93,11 +106,15 @@ while True:
 
         q = g.query(
             '''
+            
+            PREFIX URN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/#>
+        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        
             SELECT ?Name
             WHERE  
             {
-                :'''+name+''' :model_name ?Name .
-                :'''+name+''' :active true  .
+                URN:'''+name+''' URN:model_name ?Name .
+                URN:'''+name+''' URN:active true  .
             }
             ''')
 
@@ -120,10 +137,20 @@ while True:
             learn_nn(nn_model)  # обучение нейросети
             change_status(name)
 
+        break
 
 
 
 
+print("\033[36mГраф имеет {} триплетов!".format(len(g)))
+
+print("\033[35m {} !".format([i for i in g.namespaces()]))
+
+
+
+
+file = open("KB.n3", mode="wb")
+file.write(g.serialize(format= "turtle"))
 
 
 

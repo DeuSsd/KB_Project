@@ -1,0 +1,183 @@
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix : <MyBase/#> .
+
+:oil_product a rdfs:Class.
+:hardware a rdfs:Class.
+:process a rdfs:Class.
+:status_of_oil a rdfs:Class.
+
+
+
+:Pump_1             a :hardware.
+:Heat_Exchanger_1   a :hardware.
+:ELDP a :hardware.
+:Heat_Exchanger_2 a :hardware.
+:Topping_Сolumn a :hardware.
+:Petrol_Сolumn a :hardware.
+:Pump_2 a :hardware.
+:Bake a :hardware.
+:Atmospheric_Pipe_Heater a :hardware.
+:LightWeight_Сolumn a :hardware.
+
+:storage_object a :process.
+:transfer a :process.
+:heating a :process.
+:clearing a :process.
+:Primary_Rectification a :process.
+:condensation a :process.
+:Secondary_Rectification a :process.
+:Crude_Oil a :status_of_oil.
+:Heated_Crude_Oil a :status_of_oil.
+:Desalted_Crude_Oil a :status_of_oil.
+:Topped_Oil a :status_of_oil.
+:Heated_Topped_Oil a :status_of_oil.
+:Petrol_Fraction a :oil_product.
+:Light_Fraction_Vapors a :oil_product.
+:Hydrocarbon_Gases a :oil_product.
+:Masut a :oil_product.
+:Diesel_Fuel a :oil_product.
+:Kerosene a :oil_product.
+
+:storage_object a rdf:Property.
+:raw_material a rdf:Property.
+:source a rdf:Property.
+:transfer a rdf:Property.
+:source a rdf:Property.
+:purpose a rdf:Property.
+:raw_material a rdf:Property.
+:max_temp a rdf:Property.
+:min_temp a rdf:Property.
+:result a rdf:Property.
+:max_pressure a rdf:Property.
+:min_pressure a rdf:Property.
+
+
+
+
+
+
+
+:Storage    a :hardware;
+            :storage_object :Crude_Oil;
+            :raw_material :Crude_Oil.
+
+:Crude_Oil :source :Storage.
+
+:Pump_1 :transfer :Crude_Oil;
+        :source :Storage;
+        :purpose :Heat_Exchanger_1;
+        :raw_material :Crude_Oil.
+
+:Heat_Exchanger_1    :heating :Crude_Oil;
+                    :source :Pump_1;
+                    :purpose :ELDP;
+                    :min_temp 30;
+                    :max_temp 50;
+                    :result :Heated_Crude_Oil;
+                    :raw_material :Crude_Oil.
+
+:ELDP   :clearing :Crude_Oil;
+        :source :Heat_Exchanger_1;
+        :purpose :Heat_Exchanger_2;
+        :min_temp 3;
+        :max_temp 5;
+        :result :Desalted_Crude_Oil;
+        :raw_material :Crude_Oil.
+
+ :Heat_Exchanger_2 :heating :Desalted_Crude_Oil.
+ :Heat_Exchanger_2 :source :ELDP.
+ :Heat_Exchanger_2 :purpose :Topping_Сolumn.
+ :Heat_Exchanger_2 :min_temp 200.
+ :Heat_Exchanger_2 :max_temp 220.
+ :Heat_Exchanger_2 :result :Heated_Desalted_Crude_Oil.
+ :Heat_Exchanger_2 :raw_material :Desalted_Crude_Oil.
+
+
+:Topping_Сolumn  :Primary_Rectification  :Heated_Desalted_Crude_Oil.
+:Topping_Сolumn  :source  :Heat_Exchanger_2.
+:Topping_Сolumn  :purpose  :Petrol_Сolumn.
+:Topping_Сolumn  :purpose  :Pump_2.
+:Topping_Сolumn  :min_temp  240.
+:Topping_Сolumn  :max_temp  260.
+:Topping_Сolumn  :raw_material  :Desalted_Crude_Oil.
+:Topping_Сolumn  :raw_material  :Petrol_Fraction.
+:Topping_Сolumn  :min_pressure  0.4.
+:Topping_Сolumn  :max_pressure  0.5.
+:Topping_Сolumn  :result  :Topped_Oil.
+:Topping_Сolumn  :result  :Gasoline_Vapors.
+:Petrol_Сolumn  :condensation  :Petrol_Fraction.
+:Petrol_Сolumn  :source  :Topping_Сolumn.
+:Petrol_Сolumn  :purpose  :The_output_of_gasoline.
+:Petrol_Сolumn  :purpose  :The_output_of_hydrocarbon_gases.
+:Petrol_Сolumn  :min_temp  30.
+:Petrol_Сolumn  :max_temp  180.
+:Petrol_Сolumn  :result  :Petrol_Fraction.
+:Petrol_Сolumn  :result  :Hydrocarbon_Gases.
+:Petrol_Сolumn  :raw_material  :Gasoline_Vapors.
+:Pump_2  :transfer  :Topped_Oil.
+:Pump_2  :source  :Topping_Сolumn.
+:Pump_2  :purpose  :Bake.
+:Pump_2  :raw_material  :Topped_Oil.
+:Bake  :heating  :Topped_Oil.
+:Bake  :source  :Pump_2.
+:Bake  :purpose  :Atmospheric_Pipe_Heater.
+:Bake  :min_temp  340.
+:Bake  :max_temp  350.
+:Bake  :result  :Heated_Topped_Oil.
+:Bake  :raw_material  :Topped_Oil.
+:Atmospheric_Pipe_Heater  :Secondary_Rectification  :Heated_Topped_Oil.
+:Atmospheric_Pipe_Heater  :source  :Bake.
+:Atmospheric_Pipe_Heater  :purpose  :LightWeight_Сolumn.
+:Atmospheric_Pipe_Heater  :purpose  :The_output_of_kerosene.
+:Atmospheric_Pipe_Heater  :purpose  :The_output_of_diesel.
+:Atmospheric_Pipe_Heater  :purpose  :The_output_of_masut.
+:Atmospheric_Pipe_Heater  :min_temp  340.
+:Atmospheric_Pipe_Heater  :max_temp  355.
+:Atmospheric_Pipe_Heater  :raw_material  :Heated_Topped_Oil.
+:Atmospheric_Pipe_Heater  :raw_material  :Petrol_Fraction.
+:Atmospheric_Pipe_Heater  :min_pressure  0.15.
+:Atmospheric_Pipe_Heater  :max_pressure  0.2.
+:Atmospheric_Pipe_Heater  :result  :Kerosene.
+:Atmospheric_Pipe_Heater  :result  :Light_Fraction_Vapors.
+:Atmospheric_Pipe_Heater  :result  :Diesel_Fuel.
+:Atmospheric_Pipe_Heater  :result  :Masut.
+:LightWeight_Сolumn  :condensation  :Petrol_Fraction.
+:LightWeight_Сolumn  :source  :Atmospheric_Pipe_Heater.
+:LightWeight_Сolumn  :purpose  :The_output_of_gasoline.
+:LightWeight_Сolumn  :purpose  :The_output_of_hydrocarbon_gases.
+:LightWeight_Сolumn  :min_temp  30.
+:LightWeight_Сolumn  :max_temp  180.
+:LightWeight_Сolumn  :result  :Petrol_Fraction.
+:LightWeight_Сolumn  :result  :Hydrocarbon_Gases.
+:LightWeight_Сolumn  :raw_material  :Light_Fraction_Vapors.
+
+
+
+
+
+:path a rdf:Property.
+:model_name a rdf:Property.
+:base_model_name a rdf:Property.
+:active     a rdf:Property.
+
+
+:NN_model  a rdfs:Class;
+            :path "U:\\7 семестр\\pythonProject\\Models";
+            rdfs:domain :model_name ;
+            :base_model_name "Model_" .
+
+
+
+:Predicate_model_1  a :NN_Model;
+                    :model_name "Model_1" ;
+                    :active true .
+
+:Predicate_model_1  a :NN_Model;
+                    :model_name "Model_1" ;
+                    :active true .
+
+:Predicate_model_1  a :NN_Model;
+                    :model_name "Model_1" ;
+                    :active true .
