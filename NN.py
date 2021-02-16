@@ -11,13 +11,13 @@ import os
 
 # while sum > 0.5:
 def learn_nn(nn_name):
-    n = 4
+    n = 50
     # activation="relu"
     # activation="tanh"
     activation = "relu"
     sum = 100
-    d = 2
-    epochs = 20
+    d = 1
+    epochs = 100
 
     deep = n
 
@@ -78,7 +78,7 @@ def learn_nn(nn_name):
     test_y = out_data[round(columns * 0.8):]
 
     model = k.Sequential()
-    print("\033[33m==========", len(input_names), (str(n) + ",") * deep, len(output_names), "==========\033[34m")
+    # print("\033[33m==========", len(input_names), (str(n) + ",") * deep, len(output_names), "==========\033[34m")
     #
     initializer = k.initializers.TruncatedNormal(seed=seed())
 
@@ -93,32 +93,7 @@ def learn_nn(nn_name):
         model.add(k.layers.Dense(units=n,
                                  kernel_initializer=initializer,
                                  activation=activation))
-        # model.add(k.layers.Dropout(0.5))
-    #
-    # model.add(k.layers.Dense(units=n,
-    #                          # kernel_initializer = initializer,
-    #                          activation="relu",
-    #                          # activation="tanh",
-    #                          ))
-    # model.add(k.layers.Dropout(0.5))
 
-    # model.add(k.layers.Dense(units = n,
-    #                          # input_dim=4,
-    #                          # kernel_initializer = initializer,
-    #                          activation= "relu",
-    #                          # activation="tanh",
-    #                          ))
-    # model.add(k.layers.Dropout(0.5))
-
-    #
-    # model.add(k.layers.Dense(units=n,
-    # #                          # kernel_initializer = initializer,
-    #                          activation="relu"))
-    # model.add(k.layers.Dropout(0.5))
-
-    # model.add(k.layers.Dense(units = n,
-    # #                          kernel_initializer = initializer,
-    #                          activation= "relu"))
     model.add(k.layers.Dense(units=len(output_names),
                              kernel_initializer=initializer,
                              # activation = None,
@@ -197,7 +172,7 @@ def relearn(nn_name):
     # activation="tanh"
     activation = "relu"
     sum = 100
-    d = 2
+    d = 1
     epochs = 100
 
     deep = n
@@ -291,60 +266,30 @@ def relearn(nn_name):
 
 
 if __name__ == "__main__":
-
-    data_frame = pd.read_csv("data.csv")
-
-    columns = data_frame.shape[0]
-
-    data_frame = shuffle(data_frame)
-
-    # data_frame=data_frame.shuffle(buffer_size=1024).batch(64)
-
-    # input_names = ["A","k","w","x"]
-    # input_names = ["k","w","x"]
-    input_names = ["x"]
-    output_names = ["f"]
-
-    new_df = data_frame[["x", "f"]][:100]
-    df = []
-    ln = len(data_frame)
-    delta = 10
-    i = 0
-    while i < len(data_frame):
-        df.append(new_df[i:i + delta])
-        i += delta
-
-    one_df = df[0]
-    # print(one_df)
-
-    x = []
-    y = []
-
-    # for item in one_df:
-    #     x_temp = []
-    #     y_temp = []
-    #     print(item)
-    # #     for element in item["x"]:
-    # #         x_temp.append(element)
-    # #     for element in item["f"]:
-    # #         y_temp.append(element)
-    #     x.append(x_temp)
-    #     y.append(y_temp)
-    # print(x,y)
-
-
-    n = 4
+    n = 2
     # activation="relu"
     # activation="tanh"
     activation = "relu"
     sum = 100
-    d = 2
+    d = 1
     epochs = 100
 
     deep = n
 
-    input_names = ["x"]
-    output_names = ["f"]
+    # seed()
+
+    data_frame = pd.read_csv("dd.csv")
+    # data_frame = data_frame[:d * 100]
+
+    columns = data_frame.shape[0]
+
+    data_frame = shuffle(data_frame)
+    # data_frame=data_frame.shuffle(buffer_size=1024).batch(64)
+
+    # input_names = ["A","k","w","x"]
+    # input_names = ["k","w","x"]
+    input_names = ["a","b"]
+    output_names = ["c"]
 
     def dataframe_to_dict(df):
         result = dict()
@@ -356,91 +301,63 @@ if __name__ == "__main__":
             result[column] = values
         return result
 
+
     def make_supervised(df):
         raw_in_data = df[input_names]
         raw_out_data = df[output_names]
         return {"in": dataframe_to_dict(raw_in_data),
                 "out": dataframe_to_dict(raw_out_data)}
 
+
     def encode(data):
         vectors = []
         for data_name, data_values in data.items():
-            vectors.append(data_values)
+            vectors.append(list(data_values))
 
         formatted = []
-        formatted = vectors
 
-        # for vector_raw in list(zip(*vectors)):
-        #     formatted.append(list(vector_raw))
+        for vector_raw in list(zip(*vectors)):
+            formatted.append(list(vector_raw))
 
         return formatted
 
 
-    in_data =[]
-    out_data =[]
+    supervised = make_supervised(data_frame)
 
-    for item in one_df:
-        supervised = make_supervised(item)
-        in_data.append(np.array(encode(supervised["in"])))
-    # print(supervised)
-        out_data.append(np.array(encode(supervised["out"])))
-    # print(in_data)
-    # print(round(columns * 0.8))
-    #
+    in_data = np.array(encode(supervised["in"]))
+    out_data = np.array(encode(supervised["out"]))
+
+    print(round(columns * 0.8))
+
     train_x = in_data[:round(columns * 0.8)]
     train_y = out_data[:round(columns * 0.8)]
 
     test_x = in_data[round(columns * 0.8):]
     test_y = out_data[round(columns * 0.8):]
 
-    print(train_x,train_y)
     model = k.Sequential()
-    print("\033[33m==========", len(x), (str(n) + ",") * deep, len(y), "==========\033[34m")
-    # #
-    initializer = k.initializers.TruncatedNormal(seed=seed())
+    # print("\033[33m==========", len(input_names), (str(n) + ",") * deep, len(output_names), "==========\033[34m")
     #
-    model.add(k.layers.Dense(units=len(x),
+    initializer = k.initializers.TruncatedNormal(seed=seed())
+
+    model.add(k.layers.Dense(units=len(input_names),
+                             input_dim=len(input_names),
                              # kernel_initializer = initializer,
                              # activation = None,
                              # activation="relu",
                              # activation="tanh",
                              ))
     for i in range(deep):
-        model.add(k.layers.Dense(units=len(x),
+        model.add(k.layers.Dense(units=n,
                                  kernel_initializer=initializer,
                                  activation=activation))
-        model.add(k.layers.Dropout(0.5))
-    # #
-    # # model.add(k.layers.Dense(units=n,
-    # #                          # kernel_initializer = initializer,
-    # #                          activation="relu",
-    # #                          # activation="tanh",
-    # #                          ))
-    # # model.add(k.layers.Dropout(0.5))
-    #
-    # # model.add(k.layers.Dense(units = n,
-    # #                          # input_dim=4,
-    # #                          # kernel_initializer = initializer,
-    # #                          activation= "relu",
-    # #                          # activation="tanh",
-    # #                          ))
-    # # model.add(k.layers.Dropout(0.5))
-    #
-    # #
-    # # model.add(k.layers.Dense(units=n,
-    # # #                          # kernel_initializer = initializer,
-    # #                          activation="relu"))
-    # # model.add(k.layers.Dropout(0.5))
-    #
-    # # model.add(k.layers.Dense(units = n,
-    # # #                          kernel_initializer = initializer,
-    # #                          activation= "relu"))
-    model.add(k.layers.Dense(units=len(y),
+
+    model.add(k.layers.Dense(units=len(output_names),
                              kernel_initializer=initializer,
-                             activation = None,
-                             # activation='linear',
+                             # activation = None,
+                             activation='linear',
                              ))
-    #
+
     opt = k.optimizers.Adam(learning_rate=0.01)
 
     model.compile(
@@ -456,28 +373,27 @@ if __name__ == "__main__":
     early_stopping = k.callbacks.EarlyStopping(
         monitor="val_loss", patience=early_stopping_patience, restore_best_weights=True
     )
-    #
+
     # callback = k.callbacks.EarlyStopping(
     #     monitor='loss', patience=3, restore_best_weights=True, min_delta= 0.01
     # )
-
+    #
 
     fit_results = model.fit(
         x=train_x,
         y=train_y,
         epochs=epochs,
-        # validation_split=0.2,
+        validation_split=0.2,
         # callbacks=[early_stopping
         #            ],
         batch_size=32,
     )
-    # # model.save(nn_name)
-    #
-    # # plt.title("train/validation")
-    # # plt.plot(fit_results.history["accuracy"],label = "Train")
-    # # plt.plot(fit_results.history["val_accuracy"], label = "Validation")
-    # # plt.legend()
-    # # plt.show()
+
+    # plt.title("train/validation")
+    # plt.plot(fit_results.history["accuracy"],label = "Train")
+    # plt.plot(fit_results.history["val_accuracy"], label = "Validation")
+    # plt.legend()
+    # plt.show()
 
     predict = model.predict(test_x)
 
@@ -495,180 +411,3 @@ if __name__ == "__main__":
     print("\033[35mEvaluate")
     result = model.evaluate(test_x, test_y)
     dict(zip(model.metrics_names, result))
-
-    #
-    # n = 4
-    # # activation="relu"
-    # # activation="tanh"
-    # activation = "relu"
-    # sum = 100
-    # d = 2
-    # epochs = 20
-    #
-    # deep = n
-    #
-    # # seed()
-    #
-    # data_frame = pd.read_csv("data.csv")
-    # data_frame = data_frame[:d * 100]
-    #
-    # columns = data_frame.shape[0]
-    #
-    # data_frame = shuffle(data_frame)
-    # # data_frame=data_frame.shuffle(buffer_size=1024).batch(64)
-    #
-    # # input_names = ["A","k","w","x"]
-    # # input_names = ["k","w","x"]
-    # input_names = ["x"]
-    # output_names = ["f"]
-    #
-    #
-    # def dataframe_to_dict(df):
-    #     result = dict()
-    #     max = df.max()
-    #
-    #     for column in df.columns:
-    #         values = df[column] / max[column]
-    #
-    #         result[column] = values
-    #     return result
-    #
-    #
-    # def make_supervised(df):
-    #     raw_in_data = df[input_names]
-    #     raw_out_data = df[output_names]
-    #     return {"in": dataframe_to_dict(raw_in_data),
-    #             "out": dataframe_to_dict(raw_out_data)}
-    #
-    #
-    # def encode(data):
-    #     vectors = []
-    #     for data_name, data_values in data.items():
-    #         vectors.append(list(data_values))
-    #
-    #     formatted = []
-    #
-    #     for vector_raw in list(zip(*vectors)):
-    #         formatted.append(list(vector_raw))
-    #
-    #     return formatted
-    #
-    #
-    # supervised = make_supervised(data_frame)
-    #
-    # in_data = np.array(encode(supervised["in"]))
-    # out_data = np.array(encode(supervised["out"]))
-    #
-    # print(round(columns * 0.8))
-    #
-    # train_x = in_data[:round(columns * 0.8)]
-    # train_y = out_data[:round(columns * 0.8)]
-    #
-    # print(train_x,train_x)
-    #
-    # test_x = in_data[round(columns * 0.8):]
-    # test_y = out_data[round(columns * 0.8):]
-    #
-    # model = k.Sequential()
-    # print("\033[33m==========", len(input_names), (str(n) + ",") * deep, len(output_names), "==========\033[34m")
-    # #
-    # initializer = k.initializers.TruncatedNormal(seed=seed())
-    #
-    # model.add(k.layers.Dense(units=len(input_names),
-    #                          input_dim=len(input_names),
-    #                          # kernel_initializer = initializer,
-    #                          # activation = None,
-    #                          # activation="relu",
-    #                          # activation="tanh",
-    #                          ))
-    # for i in range(deep):
-    #     model.add(k.layers.Dense(units=n,
-    #                              kernel_initializer=initializer,
-    #                              activation=activation))
-    #     # model.add(k.layers.Dropout(0.5))
-    # #
-    # # model.add(k.layers.Dense(units=n,
-    # #                          # kernel_initializer = initializer,
-    # #                          activation="relu",
-    # #                          # activation="tanh",
-    # #                          ))
-    # # model.add(k.layers.Dropout(0.5))
-    #
-    # # model.add(k.layers.Dense(units = n,
-    # #                          # input_dim=4,
-    # #                          # kernel_initializer = initializer,
-    # #                          activation= "relu",
-    # #                          # activation="tanh",
-    # #                          ))
-    # # model.add(k.layers.Dropout(0.5))
-    #
-    # #
-    # # model.add(k.layers.Dense(units=n,
-    # # #                          # kernel_initializer = initializer,
-    # #                          activation="relu"))
-    # # model.add(k.layers.Dropout(0.5))
-    #
-    # # model.add(k.layers.Dense(units = n,
-    # # #                          kernel_initializer = initializer,
-    # #                          activation= "relu"))
-    # model.add(k.layers.Dense(units=len(output_names),
-    #                          kernel_initializer=initializer,
-    #                          # activation = None,
-    #                          activation='linear',
-    #                          ))
-    #
-    # opt = k.optimizers.Adam(learning_rate=0.01)
-    #
-    # model.compile(
-    #     loss='mse',
-    #     # optimizer="sgd",
-    #     # optimizer="adam",
-    #     optimizer=opt,
-    #     metrics="accuracy",
-    # )
-    #
-    # early_stopping_patience = 10
-    # # Add early stopping
-    # early_stopping = k.callbacks.EarlyStopping(
-    #     monitor="val_loss", patience=early_stopping_patience, restore_best_weights=True
-    # )
-    #
-    # # callback = k.callbacks.EarlyStopping(
-    # #     monitor='loss', patience=3, restore_best_weights=True, min_delta= 0.01
-    # # )
-    # #
-    #
-    # fit_results = model.fit(
-    #     x=train_x,
-    #     y=train_y,
-    #     epochs=epochs,
-    #     validation_split=0.2,
-    #     # callbacks=[early_stopping
-    #     #            ],
-    #     batch_size=32,
-    # )
-    #
-    # # plt.title("train/validation")
-    # # plt.plot(fit_results.history["accuracy"],label = "Train")
-    # # plt.plot(fit_results.history["val_accuracy"], label = "Validation")
-    # # plt.legend()
-    # # plt.show()
-    #
-    # predict = model.predict(test_x)
-    #
-    # sum = 0
-    # for item in range(len(predict)):
-    #     el1 = abs(predict[item][0])
-    #     el2 = abs((test_x[item][-1]))
-    #     delta = abs(el1 - el2)
-    #     sum += delta
-    #     # print(delta)
-    #
-    # print()
-    # eps = sum / len(predict)
-    # print("\033[36m", sum, eps)
-    # print("\033[35mEvaluate")
-    # result = model.evaluate(test_x, test_y)
-    # dict(zip(model.metrics_names, result))
-    #
-    #

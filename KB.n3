@@ -10,19 +10,7 @@ MyBase:NN_model a rdfs1:Class ;
 
 MyBase:Predicate_Model_1 a MyBase:NN_Model ;
     MyBase:active true ;
-    MyBase:model_name "Model_4" .
-
-MyBase:Predicate_Model_2 a MyBase:NN_Model ;
-    MyBase:active true ;
-    MyBase:model_name "Model_2" .
-
-MyBase:Predicate_Model_3 a MyBase:NN_Model ;
-    MyBase:active true ;
-    MyBase:model_name "Model_3" .
-
-MyBase:Predicate_Model_4 a MyBase:NN_Model ;
-    MyBase:active true ;
-    MyBase:model_name "Model_4" .
+    MyBase:model_name "Model_1" .
 
 MyBase:Primary_Rectification a MyBase:process .
 

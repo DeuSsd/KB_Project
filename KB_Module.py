@@ -8,6 +8,7 @@ import os
 g = Graph()
 file = open("KB.n3","rb")
 result = g.parse(source="KB.n3",format="n3")
+file.close()
 
 for subj, pred, obj in g:
     if (subj, pred, obj) not in g:
@@ -82,6 +83,7 @@ while True:
         print("нейросетевой модели нет")
         q = g.query(
             '''
+            PREFIX URN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/#>
             SELECT ?model_name
             WHERE  
             {
@@ -90,15 +92,17 @@ while True:
             '''
         )
         for item in q:
-            name = item[0].split("#")[1]
+            # print(item)
+            # name = item[0].split("#")[1]
+            name = item[0]
             print(name)
-        name+="_1"
+        name+="1"
+        print(name)
         nn_model = os.path.join(path_nn, name+".h5")
         # обучение нейросети
         learn_nn(nn_model)
         add_new_nn_to_KB(nn_model)
-        file = open("KB.n3", mode="wb")
-        file.write(g.serialize(format="turtle"))
+
     else:
         print("нейросетевая модель есть")
         print(len(q))
@@ -135,13 +139,15 @@ while True:
             # обучение нейросети
             learn_nn(nn_model)
             change_status(name)
-            file = open("KB.n3", mode="wb")
-            file.write(g.serialize(format="turtle"))
-    if input():
-        break
 
-print("\033[36mГраф имеет {} триплетов!".format(len(g)))
-print("\033[35m {} !".format([i for i in g.namespaces()]))
+    file = open("KB.n3", mode="wb")
+    file.write(g.serialize(format="turtle"))
+    file.close()
+    # if input():
+    #     break
+
+    print("\033[36mГраф имеет {} триплетов!".format(len(g)))
+    # print("\033[35m {} !".format([i for i in g.namespaces()]))
 
 
 
