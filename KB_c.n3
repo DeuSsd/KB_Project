@@ -170,6 +170,6 @@ MyBase:NN_model  a rdfs:Class;
 
 
 
-MyBase:Predicate_model_1  a MyBase:NN_Model;
+MyBase:Predicate_Model_1  a MyBase:NN_Model;
                     MyBase:model_name "Model_1" ;
                     MyBase:active true .

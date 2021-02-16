@@ -1,24 +1,36 @@
 @prefix MyBase: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/#> .
-@prefix rdf: <httpMyBase://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs: <httpMyBase://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf1: <httpMyBase://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs1: <httpMyBase://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-MyBase:NN_model a rdfs:Class ;
+MyBase:NN_model a rdfs1:Class ;
     MyBase:base_model_name "Model_" ;
     MyBase:path "U:\\7 семестр\\pythonProject\\Models" ;
-    rdfs:domain MyBase:model_name .
+    rdfs1:domain MyBase:model_name .
 
-MyBase:Predicate_model_1 a MyBase:NN_Model ;
+MyBase:Predicate_Model_1 a MyBase:NN_Model ;
     MyBase:active true ;
-    MyBase:model_name "Model_1" .
+    MyBase:model_name "Model_4" .
+
+MyBase:Predicate_Model_2 a MyBase:NN_Model ;
+    MyBase:active true ;
+    MyBase:model_name "Model_2" .
+
+MyBase:Predicate_Model_3 a MyBase:NN_Model ;
+    MyBase:active true ;
+    MyBase:model_name "Model_3" .
+
+MyBase:Predicate_Model_4 a MyBase:NN_Model ;
+    MyBase:active true ;
+    MyBase:model_name "Model_4" .
 
 MyBase:Primary_Rectification a MyBase:process .
 
 MyBase:Secondary_Rectification a MyBase:process .
 
-MyBase:active a rdf:Property .
+MyBase:active a rdf1:Property .
 
-MyBase:base_model_name a rdf:Property .
+MyBase:base_model_name a rdf1:Property .
 
 MyBase:clearing a MyBase:process .
 
@@ -26,29 +38,29 @@ MyBase:condensation a MyBase:process .
 
 MyBase:heating a MyBase:process .
 
-MyBase:max_pressure a rdf:Property .
+MyBase:max_pressure a rdf1:Property .
 
-MyBase:max_temp a rdf:Property .
+MyBase:max_temp a rdf1:Property .
 
-MyBase:min_pressure a rdf:Property .
+MyBase:min_pressure a rdf1:Property .
 
-MyBase:min_temp a rdf:Property .
+MyBase:min_temp a rdf1:Property .
 
-MyBase:path a rdf:Property .
+MyBase:path a rdf1:Property .
 
-MyBase:purpose a rdf:Property .
+MyBase:purpose a rdf1:Property .
 
-MyBase:raw_material a rdf:Property .
+MyBase:raw_material a rdf1:Property .
 
-MyBase:result a rdf:Property .
+MyBase:result a rdf1:Property .
 
-MyBase:source a rdf:Property .
+MyBase:source a rdf1:Property .
 
 MyBase:storage_object a MyBase:process,
-        rdf:Property .
+        rdf1:Property .
 
 MyBase:transfer a MyBase:process,
-        rdf:Property .
+        rdf1:Property .
 
 MyBase:Diesel_Fuel a MyBase:oil_product .
 
@@ -86,7 +98,7 @@ MyBase:Pump_1 a MyBase:hardware ;
     MyBase:source MyBase:Storage ;
     MyBase:transfer MyBase:Crude_Oil .
 
-MyBase:model_name a rdf:Property .
+MyBase:model_name a rdf1:Property .
 
 MyBase:Atmospheric_Pipe_Heater a MyBase:hardware ;
     MyBase:Secondary_Rectification MyBase:Heated_Topped_Oil ;
@@ -176,16 +188,16 @@ MyBase:Desalted_Crude_Oil a MyBase:status_of_oil .
 
 MyBase:Topped_Oil a MyBase:status_of_oil .
 
-MyBase:status_of_oil a rdfs:Class .
+MyBase:status_of_oil a rdfs1:Class .
 
 MyBase:Petrol_Fraction a MyBase:oil_product .
 
-MyBase:oil_product a rdfs:Class .
+MyBase:oil_product a rdfs1:Class .
 
-MyBase:process a rdfs:Class .
+MyBase:process a rdfs1:Class .
 
 MyBase:Crude_Oil a MyBase:status_of_oil ;
     MyBase:source MyBase:Storage .
 
-MyBase:hardware a rdfs:Class .
+MyBase:hardware a rdfs1:Class .
 

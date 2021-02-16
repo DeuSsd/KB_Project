@@ -40,6 +40,23 @@ from test import *
 # print("путь к нейросетевым моделям",path_model)
 
 def change_status(new_name):
+    # MyBase = URIRef(":")
+    MyBase = Namespace('file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/#')
+    g.bind("MyBase", MyBase)
+    g.set((MyBase.Predicate_Model_1, RDF.type, MyBase.NN_Model))
+    # print("\033[36mГраф имеет {} триплетов!".format(len(g)))
+    g.set((MyBase.Predicate_Model_1, MyBase.active, Literal(True)))
+    # print("\033[36mГраф имеет {} триплетов!".format(len(g)))
+    g.set((MyBase.Predicate_Model_1, MyBase.model_name, Literal(new_name)))
+    # print("\033[36mГраф имеет {} триплетов!".format(len(g)))
+    new_obj = MyBase[:-1]+"Predicate_"+new_name
+    g.add((new_obj, RDF.type, MyBase.NN_Model))
+    # print("\033[36mГраф имеет {} триплетов!".format(len(g)))
+    g.add((new_obj, MyBase.active, Literal(True)))
+    # print("\033[36mГраф имеет {} триплетов!".format(len(g)))
+    g.add((new_obj, MyBase.model_name, Literal(new_name)))
+    # print("\033[36mГраф имеет {} триплетов!".format(len(g)))
+
     # sampleRelations = ['similarTo', 'brotherOf', 'capitalOf']
 
 
@@ -76,6 +93,11 @@ while True:
         }
         ''')
 
+    # затестить
+    # def objects(self, subject=None, predicate=None):
+    #     """A generator of objects with the given subject and predicate"""
+    #     for s, p, o in self.triples((subject, predicate, None)):
+    #         yield o
 
     result = False
     name=""
@@ -136,8 +158,8 @@ while True:
             nn_model = os.path.join(path, name + ".h5")
             learn_nn(nn_model)  # обучение нейросети
             change_status(name)
-
-        break
+            if input():
+                break
 
 
 

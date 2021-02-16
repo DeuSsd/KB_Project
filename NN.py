@@ -16,7 +16,7 @@ def learn_nn(nn_name):
     activation = "relu"
     sum = 100
     d = 2
-    epochs = 100
+    epochs = 20
 
     deep = n
 
