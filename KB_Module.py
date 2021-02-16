@@ -1,21 +1,23 @@
 from rdflib import *
 
+from NN import learn_nn,relearn
+from test import test_nn
+
+import os
 
 g = Graph()
-
 file = open("KB.n3","rb")
-
 result = g.parse(source="KB.n3",format="n3")
 
 for subj, pred, obj in g:
     if (subj, pred, obj) not in g:
         raise Exception("N3 с ошибками!")
 
-
 print("\033[36mГраф имеет {} триплетов!".format(len(g)))
 
 
 # извлекаем путь к нейросетевым моделям
+path_nn = ''
 q = g.query(
     '''
     PREFIX URN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/#>
@@ -27,18 +29,19 @@ q = g.query(
     }
     ''')
 
-path = ''
-
 for item in q:
-    path = item[0]
+    path_nn = item[0]
+print("path",path_nn)
 
-print("path",path)
+def add_new_nn_to_KB(new_name):
+    MyBase = Namespace('file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/#')
+    g.bind("MyBase", MyBase)
+    new_obj = MyBase[:-1] + "Predicate_" + new_name
+    g.add((new_obj, RDF.type, MyBase.NN_Model))
+    g.add((new_obj, MyBase.model_name, Literal(new_name)))
+    g.add((new_obj, MyBase.active, Literal(True)))
 
-from NN import *
-from test import *
-
-# print("путь к нейросетевым моделям",path_model)
-
+#Изменение статуса
 def change_status(new_name):
     # MyBase = URIRef(":")
     MyBase = Namespace('file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/#')
@@ -49,34 +52,7 @@ def change_status(new_name):
     # print("\033[36mГраф имеет {} триплетов!".format(len(g)))
     g.set((MyBase.Predicate_Model_1, MyBase.model_name, Literal(new_name)))
     # print("\033[36mГраф имеет {} триплетов!".format(len(g)))
-    new_obj = MyBase[:-1]+"Predicate_"+new_name
-    g.add((new_obj, RDF.type, MyBase.NN_Model))
-    # print("\033[36mГраф имеет {} триплетов!".format(len(g)))
-    g.add((new_obj, MyBase.active, Literal(True)))
-    # print("\033[36mГраф имеет {} триплетов!".format(len(g)))
-    g.add((new_obj, MyBase.model_name, Literal(new_name)))
-    # print("\033[36mГраф имеет {} триплетов!".format(len(g)))
-
-    # sampleRelations = ['similarTo', 'brotherOf', 'capitalOf']
-
-
-    # general relations
-    # gen = Namespace('U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject#')
-    # g.bind('MyBASE', Namespace('U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject#').)
-
-    # Adding predefined relationships
-    # g.add(( new_name, , new_name))
-    # for rel in sampleRelations:
-    #     rel = URIRef('http://abcd.com/general#' + rel)
-    #     g.add((MyBase, RDFS.subClassOf, OWL.ObjectProperty))
-
-   # data='''
-   #  # <U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject#'''+new_name+'''>  <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject#NN_Model>.
-   #  # <U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject#'''+new_name+'''> <U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject#model_name> "'''+new_name+'''" .
-   #  # <U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject#'''+new_name+'''> <U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject#active true> .
-   #  '''
-
-    # g.parse(data,format='n3')
+    add_new_nn_to_KB(new_name)
 
 while True:
     # узнаём есть ли нейросетевые модели в базе и если есть забираем последнюю
@@ -110,15 +86,19 @@ while True:
             WHERE  
             {
                 URN:NN_model URN:base_model_name ?model_name.
-                    }
-                    ''')
-
+            }
+            '''
+        )
         for item in q:
             name = item[0].split("#")[1]
             print(name)
         name+="_1"
-        nn_model = os.path.join(path, name+".h5")
-        learn_nn(nn_model)  # обучение нейросети
+        nn_model = os.path.join(path_nn, name+".h5")
+        # обучение нейросети
+        learn_nn(nn_model)
+        add_new_nn_to_KB(nn_model)
+        file = open("KB.n3", mode="wb")
+        file.write(g.serialize(format="turtle"))
     else:
         print("нейросетевая модель есть")
         print(len(q))
@@ -128,9 +108,8 @@ while True:
 
         q = g.query(
             '''
-            
             PREFIX URN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/#>
-        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
         
             SELECT ?Name
             WHERE  
@@ -144,35 +123,25 @@ while True:
             name = item[0]
             print(name)
 
-        nn_model = os.path.join(path, name+".h5")
-
+        nn_model = os.path.join(path_nn, name+".h5")
         result = test_nn(nn_model) #проверка нейросети
 
         if result:
             relearn(nn_model)  #обучение нейросети
         else:
-
             name,i_num = name.split("_")
-
             name += "_{}".format(int(i_num)+1)
-            nn_model = os.path.join(path, name + ".h5")
-            learn_nn(nn_model)  # обучение нейросети
+            nn_model = os.path.join(path_nn, name + ".h5")
+            # обучение нейросети
+            learn_nn(nn_model)
             change_status(name)
-            if input():
-                break
-
-
-
+            file = open("KB.n3", mode="wb")
+            file.write(g.serialize(format="turtle"))
+    if input():
+        break
 
 print("\033[36mГраф имеет {} триплетов!".format(len(g)))
-
 print("\033[35m {} !".format([i for i in g.namespaces()]))
-
-
-
-
-file = open("KB.n3", mode="wb")
-file.write(g.serialize(format= "turtle"))
 
 
 
