@@ -37,9 +37,9 @@ def test_nn(nn_name):
     plt.xlabel("X")
     plt.ylabel("Y")
     plt.show()
-    # return False if random.randint(-10,10) > 0 else True
+    return False if random.randint(-2,2) >= 0 else True
     # return True
-    return False
+    # return False
 
 
 if __name__ == "__main__":

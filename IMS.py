@@ -13,16 +13,16 @@ data = []
 data.append(["A","k","w","x","f"])
 
 def fun(A=1,k=1,w=0):
-    x = -100
+    x = -10
 
-    while x<100:
+    while x<10:
         in_data.append(x)
-        # f = k*x+w
+        f = k*x+w
         # f = A*sin(k*x+w)
-        f = x*x*A+ x*k +w
+        # f = x*x*A+ x*k +w
         out_data.append(f)
         data.append([A,k,w,x,f])
-        x+=0.5
+        x+=1
 
 # i = 10
 # while i > 0:

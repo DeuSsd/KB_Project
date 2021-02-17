@@ -37,10 +37,14 @@ print("path",path_nn)
 def add_new_nn_to_KB(new_name):
     MyBase = Namespace('file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/#')
     g.bind("MyBase", MyBase)
-    new_obj = MyBase[:-1] + "Predicate_" + new_name
+    new_name=new_name.split("\\")[-1].split(".")[0]
+    new_obj = MyBase[:-1] + "Predicate_" +new_name
     g.add((new_obj, RDF.type, MyBase.NN_Model))
+    print("\033[36mГраф имеет {} триплетов!".format(len(g)))
     g.add((new_obj, MyBase.model_name, Literal(new_name)))
+    print("\033[36mГраф имеет {} триплетов!".format(len(g)))
     g.add((new_obj, MyBase.active, Literal(True)))
+    print("\033[36mГраф имеет {} триплетов!".format(len(g)))
 
 #Изменение статуса
 def change_status(new_name):
@@ -95,14 +99,15 @@ while True:
             # print(item)
             # name = item[0].split("#")[1]
             name = item[0]
-            print(name)
+            # print(name)
         name+="1"
         print(name)
         nn_model = os.path.join(path_nn, name+".h5")
+        print(nn_model)
         # обучение нейросети
         learn_nn(nn_model)
         add_new_nn_to_KB(nn_model)
-
+    #
     else:
         print("нейросетевая модель есть")
         print(len(q))
@@ -141,7 +146,7 @@ while True:
             change_status(name)
 
     file = open("KB.n3", mode="wb")
-    file.write(g.serialize(format="turtle"))
+    file.write(g.serialize(format="n3"))
     file.close()
     # if input():
     #     break
