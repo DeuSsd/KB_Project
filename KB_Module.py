@@ -156,38 +156,51 @@ def change_status(new_name):
 #
 #
 
+#
+# # Получаем имя функции
+# q = g.query(
+#         '''
+#         PREFIX URN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/formulas/#>
+#         PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+#
+#         SELECT ?name
+#         WHERE
+#         {
+#             URN:plus URN:formula_name ?name .
+#         }
+#         ''')
+#
+# for item in q:
+#     name = item[0]
+#     print(name)
 
-# Получаем имя функции
-q = g.query(
-        '''
-        PREFIX URN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/formulas/#>
-        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-
-        SELECT ?name
-        WHERE
-        {
-            URN:plus URN:formula_name ?name .
-        }
-        ''')
-
-for item in q:
-    name = item[0]
-    print(name)
 
 
-q = g.query(
-        '''
-        PREFIX URN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/formulas/#>
-        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 
-        SELECT ?name
-        WHERE
-        {
-            URN:plus URN:parametrs ?name .
-        }
-        ''')
+# for item in q:
+#     name = item[0]
+#     # print(item)
+#     # print(item[0])
+#     # print(type(item[0]))
+#     # print(type(item))
+#     # print(type(item[0].n3()))
+#     for i in item:
+#         print(item[i])
+#
+#     print("---")
+#
 
-for item in q:
-    name = item[0]
-    print(g.seq(item))
-    print(name)
+formulas = Namespace('file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/formulas/#')
+g.bind("formulas", formulas)
+for o in g.objects(formulas.plus, formulas.parametrs):
+    for e,w in g.predicate_objects((o)):
+
+#
+#
+# formulas:plus a formulas:formula ;
+#     formulas:formula_name "plus" ;
+#     formulas:parametrs formulas:mySeq .
+#
+# formulas:mySeq  a rdf:Seq ;
+#         rdf:_1 "x" ;
+#         rdf:_2 "y".

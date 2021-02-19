@@ -1,6 +1,6 @@
 @prefix MyBase: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/#> .
-@prefix rdf: <httpMyBase://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs1: <httpMyBase://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs1: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix formulas: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/formulas/#> .
 
@@ -14,8 +14,10 @@ formulas:formula a rdfs1:Class ;
 
 formulas:plus a formulas:formula ;
     formulas:formula_name "plus" ;
-    formulas:parametrs [
-        a rdf:Seq ;
-        rdf:_1 "x" ;
-        rdf:_2 "y"
-        ] .
+    formulas:numparam 3 ;
+    formulas:parametrs  [
+    a rdf:Seq ;
+    rdf:_3 "z";
+    rdf:_1 "x";
+    rdf:_2 "y"
+     ].
