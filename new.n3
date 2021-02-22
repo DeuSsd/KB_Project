@@ -2,21 +2,24 @@
 @prefix rdf1: <httpMyBase://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs1: <httpMyBase://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix formulas: <MyBase:formulas#> .
+@prefix formulas: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/formulas/#> .
 
-formulas:formula_name a rdfs1.Property .
-formulas:parametrs a rdfs1.Property .
+
+MyBase:formula a rdf:Property .
+
+formulas:formula_name a rdf:Property .
+formulas:parametrs a rdf:Property .
 
 formulas:formula a rdfs1:Class ;
-    rdfs1:domain formulas:parametrs .
+    rdfs1:domain formulas:parametrs ;
     rdfs1:domain formulas:formula_name .
 
 formulas:plus a formulas:formula ;
     formulas:formula_name "plus" ;
-    formulas:parametrs [
-    a rdf:Seq;
+    formulas:numparam 3 ;
+    rdf:_3 "z";
     rdf:_1 "x";
-    rdf:_2 "y";]
+    rdf:_2 "y".
 
 MyBase:NN_model a rdfs1:Class ;
     MyBase:base_model_name "Model_" ;

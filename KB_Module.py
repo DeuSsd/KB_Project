@@ -6,8 +6,8 @@ from rdflib import *
 import os
 
 g = Graph()
-file = open("KB.n3","rb")
-result = g.parse(source="KB.n3",format="n3")
+file = open("KB.n3", "rb")
+result = g.parse(source="KB.n3", format="n3")
 file.close()
 
 for subj, pred, obj in g:
@@ -15,6 +15,7 @@ for subj, pred, obj in g:
         raise Exception("N3 с ошибками!")
 
 print("\033[36mГраф имеет {} триплетов!".format(len(g)))
+
 
 #
 # # извлекаем путь к нейросетевым моделям
@@ -37,8 +38,8 @@ print("\033[36mГраф имеет {} триплетов!".format(len(g)))
 def add_new_nn_to_KB(new_name):
     MyBase = Namespace('file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/#')
     g.bind("MyBase", MyBase)
-    new_name=new_name.split("\\")[-1].split(".")[0]
-    new_obj = MyBase[:-1] + "Predicate_" +new_name
+    new_name = new_name.split("\\")[-1].split(".")[0]
+    new_obj = MyBase[:-1] + "Predicate_" + new_name
     g.add((new_obj, RDF.type, MyBase.NN_Model))
     print("\033[36mГраф имеет {} триплетов!".format(len(g)))
     g.add((new_obj, MyBase.model_name, Literal(new_name)))
@@ -46,7 +47,8 @@ def add_new_nn_to_KB(new_name):
     g.add((new_obj, MyBase.active, Literal(True)))
     print("\033[36mГраф имеет {} триплетов!".format(len(g)))
 
-#Изменение статуса
+
+# Изменение статуса
 def change_status(new_name):
     # MyBase = URIRef(":")
     MyBase = Namespace('file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/#')
@@ -58,6 +60,7 @@ def change_status(new_name):
     g.set((MyBase.Predicate_Model_1, MyBase.model_name, Literal(new_name)))
     # print("\033[36mГраф имеет {} триплетов!".format(len(g)))
     add_new_nn_to_KB(new_name)
+
 
 # while True:
 #     # узнаём есть ли нейросетевые модели в базе и если есть забираем последнюю
@@ -175,26 +178,80 @@ def change_status(new_name):
 #     print(name)
 
 
+q = g.query(
+    '''
+    PREFIX URN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/#>
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+    SELECT ?param_formula
+    WHERE
+    {
+        URN:Bake URN:formula ?param_formula .
+    }
+''')
+
+formula_item = ""
+for item in q:
+    formula_item = item[0].split("#")[-1]
+
+print(formula_item)
+q = g.query('''
+        PREFIX FORMULA: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/formulas/#>
+        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        SELECT ?formula_name
+        WHERE
+        {
+            FORMULA:''' + formula_item + ''' FORMULA:formula_name ?formula_name .
+        }
+''')
+formula_name = ""
+for item in q:
+    formula_name = item[0]
+print(formula_name)
+# Получаем колличество параметров функции
+q = g.query(
+    '''
+    PREFIX FORMULA: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/formulas/#>
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+    SELECT ?num
+    WHERE
+    {
+        FORMULA:''' + formula_item + ''' FORMULA:numparam ?num .
+    }
+''')
+
+number_of_parametrs = 0
+for i in q:
+    number_of_parametrs = i[0]
+    print(i[0])
+
+# Получаем параметры функции
+parametrs_of_function = {}
+for i in range(int(number_of_parametrs) + 1):
+    q = g.query('''
+            PREFIX FORMULA: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/formulas/#>
+            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    
+            SELECT ?param
+            WHERE
+            {
+                FORMULA:'''+formula_item+''' rdf:_''' + str(i) + ''' ?param .           
+            }
+    ''')
+    for item in q:
+        parametrs_of_function[i] = str(item[0])
+print(parametrs_of_function)
 
 
-# for item in q:
-#     name = item[0]
-#     # print(item)
-#     # print(item[0])
-#     # print(type(item[0]))
-#     # print(type(item))
-#     # print(type(item[0].n3()))
-#     for i in item:
-#         print(item[i])
+
+
+# formulas = Namespace('filee:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/formulas/#')
+# g.bind("formulas", formulas)
 #
-#     print("---")
-#
-
-formulas = Namespace('file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/formulas/#')
-g.bind("formulas", formulas)
-for o in g.objects(formulas.plus, formulas.parametrs):
-    for e,w in g.predicate_objects((o)):
-
+# for o in g.objects(formulas.plus, formulas.parametrs):
+#     for e,w in g.predicate_objects((o)):
+#         print(e,w)
 #
 #
 # formulas:plus a formulas:formula ;
@@ -204,3 +261,14 @@ for o in g.objects(formulas.plus, formulas.parametrs):
 # formulas:mySeq  a rdf:Seq ;
 #         rdf:_1 "x" ;
 #         rdf:_2 "y".
+
+
+# formulas:plus a formulas:formula ;
+#     formulas:formula_name "plus" ;
+#     formulas:numparam 3 ;
+#     formulas:parametrs  [
+#     a rdf:Seq ;
+#     rdf:_3 "z";
+#     rdf:_1 "x";
+#     rdf:_2 "y"
+#      ].
