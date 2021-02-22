@@ -15,20 +15,17 @@ def parametrs_to_string(param):
 
 
 def execute(formula_name,parametrs):
-    results = []
-    i = 0
-    parametrs_s = parametrs_to_string(parametrs)
-    if  "formula."+formula_name not in sys.modules:
-        exec('from formula import {}'.format(formula_name))
-        print(1)
-    else:
+    try:
+        results = []
+        parametrs_s = parametrs_to_string(parametrs)
+        exec("reload(formula)")
         exec("reload(formula.{})".format(formula_name))
-        print(2)
-    exec("results.append(formula.{}.{}({}))".format(formula_name,formula_name,parametrs_s))
-    return results[0]
+        exec("results.append(formula.{}.{}({}))".format(formula_name,formula_name,parametrs_s))
+        return results[0]
+    except:
+        return None
 
 if __name__ =="__main__":
     while True:
-        print(execute("plus",[2,3]))
-        input()
+        print(execute(input("name:"),[int(input("a:")),input("b:")]))
 
