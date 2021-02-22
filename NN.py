@@ -299,7 +299,7 @@ if __name__ == "__main__":
     #     result = dict()
     #     max = df.max()
     #
-    #     for column in df.columns:
+    #     formula column in df.columns:
     #         values = df[column] / max[column]
     #
     #         result[column] = values
@@ -315,12 +315,12 @@ if __name__ == "__main__":
     #
     # def encode(data):
     #     vectors = []
-    #     for data_name, data_values in data.items():
+    #     formula data_name, data_values in data.items():
     #         vectors.append(list(data_values))
     #
     #     formatted = []
     #
-    #     for vector_raw in list(zip(*vectors)):
+    #     formula vector_raw in list(zip(*vectors)):
     #         formatted.append(list(vector_raw))
     #
     #     return formatted
@@ -351,7 +351,7 @@ if __name__ == "__main__":
     #                          # activation="relu",
     #                          # activation="tanh",
     #                          ))
-    # for i in range(deep):
+    # formula i in range(deep):
     #     model.add(k.layers.Dense(units=n,
     #                              kernel_initializer=initializer,
     #                              activation=activation))
@@ -402,7 +402,7 @@ if __name__ == "__main__":
     # predict = model.predict(test_x)
     # model.predict(test_x)
     # sum = 0
-    # for item in range(len(predict)):
+    # formula item in range(len(predict)):
     #     el1 = abs(predict[item][0])
     #     el2 = abs((test_x[item][-1]))
     #     delta = abs(el1 - el2)

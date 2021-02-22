@@ -31,7 +31,7 @@ print("\033[36mГраф имеет {} триплетов!".format(len(g)))
 #     }
 #     ''')
 #
-# for item in q:
+# formula item in q:
 #     path_nn = item[0]
 # print("path",path_nn)
 
@@ -80,7 +80,7 @@ def change_status(new_name):
 #     # затестить
 #     # def objects(self, subject=None, predicate=None):
 #     #     """A generator of objects with the given subject and predicate"""
-#     #     for s, p, o in self.triples((subject, predicate, None)):
+#     #     formula s, p, o in self.triples((subject, predicate, None)):
 #     #         yield o
 #
 #     result = False
@@ -98,7 +98,7 @@ def change_status(new_name):
 #             }
 #             '''
 #         )
-#         for item in q:
+#         formula item in q:
 #             # print(item)
 #             # name = item[0].split("#")[1]
 #             name = item[0]
@@ -114,7 +114,7 @@ def change_status(new_name):
 #     else:
 #         print("нейросетевая модель есть")
 #         print(len(q))
-#         for item in q:
+#         formula item in q:
 #             name = item[0].split("#")[1]
 #             print(name)
 #
@@ -131,7 +131,7 @@ def change_status(new_name):
 #             }
 #             ''')
 #
-#         for item in q:
+#         formula item in q:
 #             name = item[0]
 #             print(name)
 #
@@ -155,7 +155,7 @@ def change_status(new_name):
 #     #     break
 #
 #     print("\033[36mГраф имеет {} триплетов!".format(len(g)))
-#     # print("\033[35m {} !".format([i for i in g.namespaces()]))
+#     # print("\033[35m {} !".format([i formula i in g.namespaces()]))
 #
 #
 
@@ -173,7 +173,7 @@ def change_status(new_name):
 #         }
 #         ''')
 #
-# for item in q:
+# formula item in q:
 #     name = item[0]
 #     print(name)
 
@@ -243,14 +243,17 @@ for i in range(int(number_of_parametrs) + 1):
         parametrs_of_function[i] = str(item[0])
 print(parametrs_of_function)
 
+from main import execute
+
+print(execute(formula_name,[2,2]))
 
 
 
 # formulas = Namespace('filee:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/formulas/#')
 # g.bind("formulas", formulas)
 #
-# for o in g.objects(formulas.plus, formulas.parametrs):
-#     for e,w in g.predicate_objects((o)):
+# formula o in g.objects(formulas.plus, formulas.parametrs):
+#     formula e,w in g.predicate_objects((o)):
 #         print(e,w)
 #
 #

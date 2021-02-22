@@ -29,7 +29,7 @@ def fun(A=1,k=1,w=0):
 #     fun(1,0.5,0)
 #     i-= 1
 
-# param = [[random.randint(-10,10),random.randint(-10,10),random.randint(-10, 10)] for i in range(100)]
+# param = [[random.randint(-10,10),random.randint(-10,10),random.randint(-10, 10)] formula i in range(100)]
 param = [[1,1,1] for i in range(100)]
 for item in param:
     fun(*item)
