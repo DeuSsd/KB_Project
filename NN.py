@@ -1,4 +1,9 @@
 from NN_tools import *
 
 
-# relearn_nn()
+
+
+
+learn_nn(
+
+)

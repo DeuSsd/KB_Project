@@ -4,30 +4,43 @@ from sklearn.utils import shuffle
 import pandas as pd
 import numpy as np
 
-def learn_nn(nn_name):
-    n = 4
+'''
+Метод обучения нейронной сети
+    
+'''
+
+
+def learn_nn(nn_name,  # имя нейросетевой модели
+             input_names,  # список входных параметров
+             output_names,  # список выходных параметров
+             dataset_name,  # название датасета .csv
+             number_of_neurons,  # количество нейронов в слое
+             number_of_layer  # количество слоёв в нейросетевой модели
+             ):
+
     # activation="relu"
     # activation="tanh"
     activation = "relu"
-    sum = 100
-    d = 1
+
     epochs = 10
-    deep = n
+
     # seed()
-    data_frame = pd.read_csv("data.csv")
-    # data_frame = data_frame[:d * 100]
+    data_frame = pd.read_csv(dataset_name)
 
     columns = data_frame.shape[0]
 
+    # перемешивание данных
     data_frame = shuffle(data_frame)
+
     # data_frame=data_frame.shuffle(buffer_size=1024).batch(64)
 
     # input_names = ["A","k","w","x"]
     # input_names = ["k","w","x"]
-    input_names = ["x"]
-    output_names = ["f"]
+    # input_names = ["x"]
+    # output_names = ["f"]
     # input_names = ["a", "b"]
     # output_names = ["c"]
+
     def dataframe_to_dict(df):
         result = dict()
         max = df.max()
@@ -69,11 +82,17 @@ def learn_nn(nn_name):
     test_x = in_data[round(columns * 0.8):]
     test_y = out_data[round(columns * 0.8):]
 
-    model = k.Sequential()
-    # print("\033[33m==========", len(input_names), (str(n) + ",") * deep, len(output_names), "==========\033[34m")
-    #
-    initializer = k.initializers.TruncatedNormal(seed=seed())
+    print("\033[33m==========",
+          len(input_names),
+          (str(number_of_neurons) + ",") * number_of_layer,
+          len(output_names),
+          "==========\033[34m")
 
+    # Начало сборки модели
+    model = k.Sequential()
+    initializer = k.initializers.TruncatedNormal(seed=seed())  # задаём сид, для случайных весов
+
+    # входной слой
     model.add(k.layers.Dense(units=len(input_names),
                              input_dim=len(input_names),
                              # kernel_initializer = initializer,
@@ -81,15 +100,16 @@ def learn_nn(nn_name):
                              # activation="relu",
                              # activation="tanh",
                              ))
-    for i in range(deep):
-        model.add(k.layers.Dense(units=n,
+    # скрытые слои
+    for i in range(number_of_layer):
+        model.add(k.layers.Dense(units=number_of_neurons,
                                  kernel_initializer=initializer,
                                  activation=activation))
-
+    # выходной слой
     model.add(k.layers.Dense(units=len(output_names),
                              kernel_initializer=initializer,
-                             # activation = None,
-                             activation='linear',
+                             activation = None,
+                             # activation='linear',
                              ))
 
     opt = k.optimizers.Adam(learning_rate=0.01)
@@ -102,55 +122,55 @@ def learn_nn(nn_name):
         metrics="accuracy",
     )
 
-    early_stopping_patience = 10
-    # Add early stopping
-    early_stopping = k.callbacks.EarlyStopping(
-        monitor="val_loss", patience=early_stopping_patience, restore_best_weights=True
-    )
+    # early_stopping_patience = 10
+    # # Add early stopping
+    # early_stopping = k.callbacks.EarlyStopping(
+    #     monitor="val_loss", patience=early_stopping_patience, restore_best_weights=True
+    # )
 
     # callback = k.callbacks.EarlyStopping(
     #     monitor='loss', patience=3, restore_best_weights=True, min_delta= 0.01
     # )
     #
 
-    fit_results = model.fit(
-        x=train_x,
-        y=train_y,
-        epochs=epochs,
-        validation_split=0.2,
-        # callbacks=[early_stopping
-        #            ],
-        batch_size=32,
-    )
-    model.save(nn_name)
+    # fit_results = model.fit(
+    #     x=train_x,
+    #     y=train_y,
+    #     epochs=epochs,
+    #     validation_split=0.2,
+    #     # callbacks=[early_stopping
+    #     #            ],
+    #     batch_size=32,
+    # )
+
+
+    model.save(nn_name)#сохранение полученной нейросетевой модели
 
     # plt.title("train/validation")
     # plt.plot(fit_results.history["accuracy"],label = "Train")
     # plt.plot(fit_results.history["val_accuracy"], label = "Validation")
     # plt.legend()
     # plt.show()
-
-    predict = model.predict(test_x)
-
-    sum = 0
-    for item in range(len(predict)):
-        el1 = abs(predict[item][0])
-        el2 = abs((test_x[item][-1]))
-        delta = abs(el1 - el2)
-        sum += delta
-        # print(delta)
-
-    print()
-    eps = sum / len(predict)
-    print("\033[36m", sum, eps)
-    print("\033[35mEvaluate")
-    result = model.evaluate(test_x, test_y)
-    dict(zip(model.metrics_names, result))
-
+    #
+    # predict = model.predict(test_x)
+    #
+    # sum = 0
+    # for item in range(len(predict)):
+    #     el1 = abs(predict[item][0])
+    #     el2 = abs((test_x[item][-1]))
+    #     delta = abs(el1 - el2)
+    #     sum += delta
+    #     # print(delta)
+    #
+    # print()
+    # eps = sum / len(predict)
+    # print("\033[36m", sum, eps)
+    # print("\033[35mEvaluate")
+    # result = model.evaluate(test_x, test_y)
+    # dict(zip(model.metrics_names, result))
 
 # plt.title("loss/validation")
 # plt.plot(fit_results.history["loss"],label = "Train")
 # plt.plot(fit_results.history["val_loss"], label = "Validation")
 # plt.legend()
 # plt.show()
-

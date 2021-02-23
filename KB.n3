@@ -8,17 +8,29 @@
 MyBase:formula a rdf:Property .
 
 formulas:formula_name a rdf:Property .
-formulas:parametrs a rdf:Property .
+formulas:numparam a rdf:Property .
+formulas:exit_param a rdf:Property .
 
 formulas:formula a rdfs:Class ;
-    rdfs:domain formulas:parametrs ;
+    rdfs:domain formulas:exit_param ;
+    rdfs:domain formulas:numparam ;
     rdfs:domain formulas:formula_name .
 
 formulas:plus_formula a formulas:formula ;
     formulas:formula_name "plus" ;
     formulas:numparam 2 ;
+    formulas:exit_param "result";
     rdf:_1 "x";
     rdf:_2 "y".
+
+
+formulas:linear_formula a formulas:formula ;
+    formulas:formula_name "linear" ;
+    formulas:numparam 3 ;
+    formulas:exit_param "y";
+    rdf:_1 "x";
+    rdf:_2 "b";
+    rdf:_3 "c".
 
 MyBase:NN_model a rdfs:Class ;
     MyBase:base_model_name "Model_" ;
@@ -135,7 +147,7 @@ MyBase:Bake a MyBase:hardware ;
     MyBase:raw_material MyBase:Topped_Oil ;
     MyBase:result MyBase:Heated_Topped_Oil ;
     MyBase:source MyBase:Pump_2 ;
-    MyBase:formula MyBase:plus_formula.
+    MyBase:formula NN:linear_formula.
 
 MyBase:ELDP a MyBase:hardware ;
     MyBase:clearing MyBase:Crude_Oil ;
@@ -214,7 +226,6 @@ MyBase:hardware a rdfs:Class .
 
 NN:number_of_neurons a rdf:Property.
 NN:number_of_layers a rdf:Property.
-    NN:method_name
 
 
 

@@ -3,3 +3,4 @@ from formula import mul
 from formula import minus
 from formula import heatTime
 from formula import ss
+from formula import linear

@@ -160,24 +160,40 @@ def change_status(new_name):
 #
 
 # ////////////////////////////////////////////////////////////////////////////////
-
-# Получаем имя функции
-q = g.query(
-        '''
-        PREFIX URN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/formulas/#>
-        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-
-        SELECT ?name
-        WHERE
-        {
-            URN:plus URN:formula_name ?name .
-        }
-        ''')
-
-for item in q:
-    name = item[0]
-    print(name)
-
+#
+# # Получение формулы объекта
+# q = g.query(
+#         '''
+#         PREFIX URN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/formulas/#>
+#         PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+#
+#         SELECT ?name
+#
+#         URN:Bake URN:formula ?name.
+#         '''
+# )
+# formula_item = ''
+# for item in q:
+#     formula_item = item[0].split("#")[-1]
+#     print(formula_item)
+#
+# # Получаем имя функции
+# q = g.query(
+#         '''
+#         PREFIX FORMULA: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/formulas/#>
+#         PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+#
+#         SELECT ?name
+#         WHERE
+#         {
+#             FORMULA:'''+formula_item+''' FORMULA:formula_name ?name .
+#         }
+#         ''')
+#
+# for item in q:
+#     name = item[0]
+#     print(name)
+#
 
 q = g.query(
     '''
@@ -244,8 +260,26 @@ for i in range(int(number_of_parametrs) + 1):
         parametrs_of_function[i] = str(item[0])
 print(parametrs_of_function)
 
+# Получаем название выхода функции
+q = g.query('''
+            PREFIX FORMULA: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/formulas/#>
+            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+            SELECT ?param
+            WHERE
+            {
+                FORMULA:'''+formula_item+''' FORMULA:exit_param ?param .
+            }
+    ''')
+
+exit_parametr = ""
+for item in q:
+    exit_parametr = item[0].split("#")[-1]
+print(exit_parametr)
 from main import execute
-print(execute(formula_name,[10,10]))
+print(execute(formula_name,[2,2,6]))
+
+
 # ////////////////////////////////////////////////////////////////////////////////
 #узнаём базовые параметры для обучения
 q = g.query('''
