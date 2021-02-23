@@ -3,7 +3,7 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix formulas: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/formulas/#> .
-
+@prefix NN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/NN/#> .
 
 MyBase:formula a rdf:Property .
 
@@ -210,4 +210,23 @@ MyBase:Crude_Oil a MyBase:status_of_oil ;
     MyBase:source MyBase:Storage .
 
 MyBase:hardware a rdfs:Class .
+
+
+NN:number_of_neurons a rdf:Property.
+NN:number_of_layers a rdf:Property.
+    NN:method_name
+
+
+
+NN:nn_model a rdfs:Class;
+        rdfs:domain NN:number_of_neurons;
+        rdfs:domain NN:number_of_layers.
+
+NN:base_parametrs_nn_model a NN:model;
+        NN:number_of_neurons   10;
+        NN:number_of_layer     2.
+
+NN:best_parametrs_nn_model a NN:model;
+        NN:number_of_neurons   10;
+        NN:number_of_layer     2.
 

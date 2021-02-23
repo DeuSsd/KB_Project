@@ -159,23 +159,24 @@ def change_status(new_name):
 #
 #
 
-#
-# # Получаем имя функции
-# q = g.query(
-#         '''
-#         PREFIX URN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/formulas/#>
-#         PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-#
-#         SELECT ?name
-#         WHERE
-#         {
-#             URN:plus URN:formula_name ?name .
-#         }
-#         ''')
-#
-# formula item in q:
-#     name = item[0]
-#     print(name)
+# ////////////////////////////////////////////////////////////////////////////////
+
+# Получаем имя функции
+q = g.query(
+        '''
+        PREFIX URN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/formulas/#>
+        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+        SELECT ?name
+        WHERE
+        {
+            URN:plus URN:formula_name ?name .
+        }
+        ''')
+
+for item in q:
+    name = item[0]
+    print(name)
 
 
 q = g.query(
@@ -232,11 +233,11 @@ for i in range(int(number_of_parametrs) + 1):
     q = g.query('''
             PREFIX FORMULA: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/formulas/#>
             PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    
+
             SELECT ?param
             WHERE
             {
-                FORMULA:'''+formula_item+''' rdf:_''' + str(i) + ''' ?param .           
+                FORMULA:'''+formula_item+''' rdf:_''' + str(i) + ''' ?param .
             }
     ''')
     for item in q:
@@ -244,34 +245,32 @@ for i in range(int(number_of_parametrs) + 1):
 print(parametrs_of_function)
 
 from main import execute
+print(execute(formula_name,[10,10]))
+# ////////////////////////////////////////////////////////////////////////////////
+#узнаём базовые параметры для обучения
+q = g.query('''
+        PREFIX NN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/NN/#>
+        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        SELECT ?num_n ?num_l 
+        WHERE
+        {
+            NN:base_parametrs_nn_model NN:number_of_neurons ?num_n .
+            NN:base_parametrs_nn_model NN:number_of_layer ?num_l .
+        }
+''')
+number_of_neurons = 0
+number_of_layer = 0
 
-print(execute(formula_name,[2,2]))
+for item in q:
+    number_of_neurons = item[0]
+    number_of_layer = item[1]
 
+# Конвертирует словарь параметров в список
+def convert_dict_to_ilst(dict_parametrs):
+    l = len(dict_parametrs)
+    list_parametrs = []
+    for i in range(l+1):
+        list_parametrs.append(dict_parametrs[i])
+    return list_parametrs
 
-
-# formulas = Namespace('filee:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/formulas/#')
-# g.bind("formulas", formulas)
-#
-# formula o in g.objects(formulas.plus, formulas.parametrs):
-#     formula e,w in g.predicate_objects((o)):
-#         print(e,w)
-#
-#
-# formulas:plus a formulas:formula ;
-#     formulas:formula_name "plus" ;
-#     formulas:parametrs formulas:mySeq .
-#
-# formulas:mySeq  a rdf:Seq ;
-#         rdf:_1 "x" ;
-#         rdf:_2 "y".
-
-
-# formulas:plus a formulas:formula ;
-#     formulas:formula_name "plus" ;
-#     formulas:numparam 3 ;
-#     formulas:parametrs  [
-#     a rdf:Seq ;
-#     rdf:_3 "z";
-#     rdf:_1 "x";
-#     rdf:_2 "y"
-#      ].
+print(number_of_neurons, number_of_layer)
