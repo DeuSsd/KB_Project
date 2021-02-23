@@ -265,6 +265,7 @@ while True:
         # обучение нейросети
         accuracy = 0
         while accuracy < 0.3:
+
             learn_nn.learn_nn(
                 nn_model_name,
                 input_names,
@@ -273,6 +274,7 @@ while True:
                 number_of_neurons,
                 number_of_layer
             )
+
             accuracy = test_nn(
                 nn_model_name,
                 input_names,
@@ -281,15 +283,15 @@ while True:
                 "data.csv"
             )
             print(number_of_neurons,number_of_layer,accuracy)
-            if number_of_neurons < 20:
+            if number_of_neurons < 0:
                 number_of_neurons+=1
-            elif number_of_layer < 5:
-                number_of_neurons += 1
+            elif number_of_layer < 0:
+                number_of_layer += 1
             else:
                 break
 
         add_new_nn_to_KB(nn_model_name)
-    #
+
     else:
         print("нейросетевая модель есть")
         print(len(q))
@@ -316,17 +318,68 @@ while True:
 
         full_path_nn_model = os.path.join(path_nn, nn_model_name + ".h5")
         print(full_path_nn_model)
-        # result = test_nn(nn_model) #проверка нейросети
-        #
-        # if result:
-        #     relearn_nn(nn_model)  #обучение нейросети
-        # else:
-        #     name,i_num = name.split("_")
-        #     name += "_{}".format(int(i_num)+1)
-        #     nn_model = os.path.join(path_nn, name + ".h5")
-        #     # обучение нейросети
-        #     learn_nn(nn_model)
-        #     change_status(name)
+
+        accuracy = test_nn(
+                    full_path_nn_model,
+                    input_names,
+                    output_names,
+                    formula_name,
+                    "data.csv"
+                ) #проверка нейросети
+        print(number_of_neurons, number_of_layer, accuracy)
+        if accuracy < 0.3:
+            relearn_nn.relearn_nn(
+                full_path_nn_model,
+                input_names,
+                output_names,
+                "data.csv"
+            )
+
+            accuracy = test_nn(
+                full_path_nn_model,
+                input_names,
+                output_names,
+                formula_name,
+                "data.csv"
+            )  # проверка нейросети
+            print(number_of_neurons, number_of_layer, accuracy)
+            if accuracy < 0.3:
+                name,i_num = nn_model_name.split("_")
+                name += "_{}".format(int(i_num)+1)
+                nn_model_name = os.path.join(path_nn, name + ".h5")
+                # обучение нейросети
+                accuracy = 0
+                while accuracy < 0.3:
+
+                    learn_nn.learn_nn(
+                        nn_model_name,
+                        input_names,
+                        output_names,
+                        "data.csv",
+                        number_of_neurons,
+                        number_of_layer
+                    )
+
+                    accuracy = test_nn(
+                        nn_model_name,
+                        input_names,
+                        output_names,
+                        formula_name,
+                        "data.csv"
+                    )
+
+                    print(number_of_neurons, number_of_layer, accuracy)
+                    if number_of_neurons < 0:
+                        number_of_neurons += 1
+                    elif number_of_layer < 0:
+                        number_of_layer += 1
+                    else:
+                        break
+                add_new_nn_to_KB(nn_model_name)
+                print(2,nn_model_name)
+            else:
+                print(1)
+                change_status(nn_model_name)
 
     # Запись в базу знаний, сохранение
     file = open("KB.n3", mode="wb")

@@ -31,6 +31,14 @@ MyBase:Predicate_Model_1 a MyBase:NN_Model ;
     MyBase:active true ;
     MyBase:model_name "Model_1" .
 
+MyBase:Predicate_Model_2 a MyBase:NN_Model ;
+    MyBase:active true ;
+    MyBase:model_name "Model_2" .
+
+MyBase:Predicate_Model_3 a MyBase:NN_Model ;
+    MyBase:active true ;
+    MyBase:model_name "Model_3" .
+
 MyBase:Primary_Rectification a MyBase:process .
 
 MyBase:Secondary_Rectification a MyBase:process .

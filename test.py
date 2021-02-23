@@ -16,6 +16,7 @@ def test_nn(
         funName,  # имя тестовой функции
         dataset_name,  # название датасета .csv
 ):
+    print(nn_name)
     model = keras.models.load_model(nn_name)
 
 

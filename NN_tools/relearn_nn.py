@@ -4,20 +4,24 @@ import pandas as pd
 import numpy as np
 
 # переобучение готовой нейросети
-def relearn_nn(nn_name):
+def relearn_nn(nn_name,  # имя нейросетевой модели
+             input_names,  # список входных параметров
+             output_names,  # список выходных параметров
+             dataset_name,  # название датасета .csv
+             ):
+    print(nn_name)
     model = k.models.load_model(nn_name)
 
-    sum = 100
-    epochs = 100
+    epochs = 10
 
-    data_frame = pd.read_csv("data.csv")
+    data_frame = pd.read_csv(dataset_name)
 
     columns = data_frame.shape[0]
     data_frame = shuffle(data_frame)
     # input_names = ["A","k","w","x"]
     # input_names = ["k","w","x"]
-    input_names = ["x"]
-    output_names = ["f"]
+    # input_names = ["x"]
+    # output_names = ["f"]
     # input_names = ["a", "b"]
     # output_names = ["c"]
 
@@ -62,11 +66,11 @@ def relearn_nn(nn_name):
     test_x = in_data[round(columns * 0.8):]
     test_y = out_data[round(columns * 0.8):]
 
-    early_stopping_patience = 10
+    # early_stopping_patience = 10
     # Add early stopping
-    early_stopping = k.callbacks.EarlyStopping(
-        monitor="val_loss", patience=early_stopping_patience, restore_best_weights=True
-    )
+    # early_stopping = k.callbacks.EarlyStopping(
+    #     monitor="val_loss", patience=early_stopping_patience, restore_best_weights=True
+    # )
 
     # callback = k.callbacks.EarlyStopping(
     #     monitor='loss', patience=3, restore_best_weights=True, min_delta= 0.01
@@ -82,13 +86,13 @@ def relearn_nn(nn_name):
         #            ],
         batch_size=32,
     )
-    model.save(nn_name)
+    model.save(nn_name)#сохранение полученной нейросетевой модели
 
-    predict = model.predict(test_x)
-
-    print()
-    eps = sum / len(predict)
-    print("\033[36m", sum, eps)
-    print("\033[35mEvaluate")
-    result = model.evaluate(test_x, test_y)
-    dict(zip(model.metrics_names, result))
+    # predict = model.predict(test_x)
+    #
+    # print()
+    # eps = sum / len(predict)
+    # print("\033[36m", sum, eps)
+    # print("\033[35mEvaluate")
+    # result = model.evaluate(test_x, test_y)
+    # dict(zip(model.metrics_names, result))
