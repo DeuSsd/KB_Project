@@ -2,12 +2,61 @@ import keras
 import random
 
 import matplotlib.pyplot as plt
+from FunExec import execute
+
+print(execute(formula_name, [2, 2, 6]))
 
 
 # проверка существующей нейросети
-def test_nn(nn_name):
-
+def test_nn(
+        nn_name,  # имя нейросетевой модели
+        input_names,  # список входных параметров
+        output_names,  # список выходных параметров
+        funName,  # имя тестовой функции
+        dataset_name,  # название датасета .csv
+):
+    rezult_data = {}
     model = keras.models.load_model(nn_name)
+    # data_x = []
+    # data_n = []
+    # data_f = []
+
+    # A = random.randint(-10, 10)
+    # k = random.randint(-10, 10)
+    # w = random.randint(-10, 10)
+    # A = k = w = 1
+    # i = 10
+    #
+    # x = -i
+
+    while x < i:
+        # f = k * x + w
+        # f = A * sin(k * x + w)
+        f = k * x + w
+        predict = model.predict([[x]])
+        n1 = predict[0][0]
+        data_x.append(x)
+        data_f.append(f)
+        data_n.append(n1)
+        x += 0.5
+
+    plt.plot(data_x, data_f, color='red')
+    plt.plot(data_x, data_n, color='blue')
+    plt.title("math.sin()")
+    plt.xlabel("X")
+    plt.ylabel("Y")
+    plt.show()
+    return False if random.randint(-2, 2) >= 0 else True
+    # return True
+    # return False
+
+
+if __name__ == "__main__":
+
+    # model = k.models.load_model("Models\Model_1.h5")
+    #
+    from math import sin
+
     data_x = []
     data_n = []
     data_f = []
@@ -30,46 +79,6 @@ def test_nn(nn_name):
         data_f.append(f)
         data_n.append(n1)
         x += 0.5
-
-    plt.plot(data_x, data_f, color='red')
-    plt.plot(data_x, data_n, color='blue')
-    plt.title("math.sin()")
-    plt.xlabel("X")
-    plt.ylabel("Y")
-    plt.show()
-    return False if random.randint(-2,2) >= 0 else True
-    # return True
-    # return False
-
-
-if __name__ == "__main__":
-
-    # model = k.models.load_model("Models\Model_1.h5")
-    #
-    from math import sin
-    data_x = []
-    data_n = []
-    data_f = []
-
-
-    A = random.randint(-10,10)
-    k = random.randint(-10,10)
-    w = random.randint(-10,10)
-    A = k = w = 1
-    i = 10
-
-    x = -i
-
-    while x <i:
-        # f = k * x + w
-        # f = A * sin(k * x + w)
-        f = k*x+w
-        predict = model.predict([[x]])
-        n1 = predict[0][0]
-        data_x.append(x)
-        data_f.append(f)
-        data_n.append(n1)
-        x+=0.5
 
     plt.plot(data_x, data_f, color='red')
     plt.plot(data_x, data_n, color='blue')

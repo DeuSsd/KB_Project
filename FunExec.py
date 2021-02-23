@@ -1,8 +1,6 @@
 import sys
 from importlib import reload
-
 import formula
-
 
 def parametrs_to_string(param):
     str_p = ""
