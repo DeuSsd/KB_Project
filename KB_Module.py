@@ -1,7 +1,6 @@
 from rdflib import *
-
-# from NN import learn_nn,relearn
-# from test import test_nn
+from NN_tools import *
+from test import test_nn
 
 import os
 
@@ -15,8 +14,6 @@ for subj, pred, obj in g:
         raise Exception("N3 с ошибками!")
 
 print("\033[36mГраф имеет {} триплетов!".format(len(g)))
-
-
 
 # извлекаем путь к нейросетевым моделям
 path_nn = ''
@@ -33,7 +30,8 @@ q = g.query(
 
 for item in q:
     path_nn = item[0]
-print("path",path_nn)
+print("path", path_nn)
+
 
 def add_new_nn_to_KB(new_name):
     MyBase = Namespace('file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/#')
@@ -156,7 +154,7 @@ for i in range(int(number_of_parametrs) + 1):
             SELECT ?param
             WHERE
             {
-                FORMULA:'''+formula_item+''' rdf:_''' + str(i) + ''' ?param .
+                FORMULA:''' + formula_item + ''' rdf:_''' + str(i) + ''' ?param .
             }
     ''')
     for item in q:
@@ -171,7 +169,7 @@ q = g.query('''
             SELECT ?param
             WHERE
             {
-                FORMULA:'''+formula_item+''' FORMULA:exit_param ?param .
+                FORMULA:''' + formula_item + ''' FORMULA:exit_param ?param .
             }
 ''')
 
@@ -180,13 +178,11 @@ for item in q:
     exit_parametr = item[0].split("#")[-1]
 print(exit_parametr)
 
-
-
 # from FunExec import execute
 # print(execute(formula_name,[2,2,6]))
 
 # ////////////////////////////////////////////////////////////////////////////////
-#узнаём базовые параметры для обучения
+# узнаём базовые параметры для обучения
 q = g.query('''
         PREFIX NN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/NN/#>
         PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -201,115 +197,144 @@ number_of_neurons = 0
 number_of_layer = 0
 
 for item in q:
-    number_of_neurons = item[0]
-    number_of_layer = item[1]
+    number_of_neurons = int(item[0])
+    number_of_layer = int(item[1])
+
 
 # Конвертирует словарь параметров в список
 def convert_dict_to_ilst(dict_parametrs):
     l = len(dict_parametrs)
     list_parametrs = []
-    for i in range(l+1):
-        list_parametrs.append(dict_parametrs[i])
+    for i in range(l):
+        list_parametrs.append(dict_parametrs[i+1])
     return list_parametrs
+
 
 print(number_of_neurons, number_of_layer)
 
+input_names = convert_dict_to_ilst(parametrs_of_function)  # список входных параметров
+output_names = [exit_parametr]  # список выходных параметров
 
 # ////////////////////////////////////////////////////////////////////////////////
 
-# while True:
-#     # узнаём есть ли нейросетевые модели в базе и если есть забираем последнюю
-#     q = g.query(
-#         '''
-#         PREFIX URN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/#>
-#         PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-#
-#         SELECT ?instance
-#         WHERE
-#         {
-#             ?instance a URN:NN_Model .
-#             ?instance URN:active true .
-#         }
-#         ''')
-#
-#     # затестить
-#     # def objects(self, subject=None, predicate=None):
-#     #     """A generator of objects with the given subject and predicate"""
-#     #     formula s, p, o in self.triples((subject, predicate, None)):
-#     #         yield o
-#
-#     result = False
-#     name=""
-#
-#     if len(q) == 0:
-#         print("нейросетевой модели нет")
-#         q = g.query(
-#             '''
-#             PREFIX URN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/#>
-#             SELECT ?model_name
-#             WHERE
-#             {
-#                 URN:NN_model URN:base_model_name ?model_name.
-#             }
-#             '''
-#         )
-#         formula item in q:
-#             # print(item)
-#             # name = item[0].split("#")[1]
-#             name = item[0]
-#             # print(name)
-#         name+="1"
-#         print(name)
-#         nn_model = os.path.join(path_nn, name+".h5")
-#         print(nn_model)
-#         # обучение нейросети
-#         learn_nn(nn_model)
-#         add_new_nn_to_KB(nn_model)
-#     #
-#     else:
-#         print("нейросетевая модель есть")
-#         print(len(q))
-#         formula item in q:
-#             name = item[0].split("#")[1]
-#             print(name)
-#
-#         q = g.query(
-#             '''
-#             PREFIX URN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/#>
-#             PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-#
-#             SELECT ?Name
-#             WHERE
-#             {
-#                 URN:'''+name+''' URN:model_name ?Name .
-#                 URN:'''+name+''' URN:active true  .
-#             }
-#             ''')
-#
-#         formula item in q:
-#             name = item[0]
-#             print(name)
-#
-#         nn_model = os.path.join(path_nn, name+".h5")
-#         result = test_nn(nn_model) #проверка нейросети
-#
-#         if result:
-#             relearn(nn_model)  #обучение нейросети
-#         else:
-#             name,i_num = name.split("_")
-#             name += "_{}".format(int(i_num)+1)
-#             nn_model = os.path.join(path_nn, name + ".h5")
-#             # обучение нейросети
-#             learn_nn(nn_model)
-#             change_status(name)
-#
-#     file = open("KB.n3", mode="wb")
-#     file.write(g.serialize(format="n3"))
-#     file.close()
-#     # if input():
-#     #     break
-#
-#     print("\033[36mГраф имеет {} триплетов!".format(len(g)))
-#     # print("\033[35m {} !".format([i formula i in g.namespaces()]))
-#
-#
+while True:
+    # узнаём есть ли нейросетевые модели в базе и если есть забираем последнюю
+    q = g.query(
+        '''
+        PREFIX URN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/#>
+        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+        SELECT ?instance
+        WHERE
+        {
+            ?instance a URN:NN_Model .
+            ?instance URN:active true .
+        }
+        ''')
+
+    # затестить
+    # def objects(self, subject=None, predicate=None):
+    #     """A generator of objects with the given subject and predicate"""
+    #     formula s, p, o in self.triples((subject, predicate, None)):
+    #         yield o
+
+    result = False
+    base_nn_model_name = ""
+    nn_model_name = ""
+    if len(q) == 0:
+        print("нейросетевой модели нет")
+        q = g.query(
+            '''
+            PREFIX URN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/#>
+            SELECT ?model_name
+            WHERE
+            {
+                URN:NN_model URN:base_model_name ?model_name.
+            }
+            '''
+        )
+        for item in q:
+            # print(item)
+            # name = item[0].split("#")[1]
+            base_nn_model_name = item[0]
+            # print(name)
+        base_nn_model_name += "1"
+        print(base_nn_model_name)
+        nn_model_name = os.path.join(path_nn, base_nn_model_name + ".h5")
+        print(nn_model_name)
+        # обучение нейросети
+        accuracy = 0
+        while accuracy < 0.3:
+            learn_nn.learn_nn(
+                nn_model_name,
+                input_names,
+                output_names,
+                "data.csv",
+                number_of_neurons,
+                number_of_layer
+            )
+            accuracy = test_nn(
+                nn_model_name,
+                input_names,
+                output_names,
+                formula_name,
+                "data.csv"
+            )
+            print(number_of_neurons,number_of_layer,accuracy)
+            if number_of_neurons < 20:
+                number_of_neurons+=1
+            elif number_of_layer < 5:
+                number_of_neurons += 1
+            else:
+                break
+
+        add_new_nn_to_KB(nn_model_name)
+    #
+    else:
+        print("нейросетевая модель есть")
+        print(len(q))
+        for item in q:
+            nn_model_name = item[0].split("#")[1]
+            print(nn_model_name)
+
+        q = g.query(
+            '''
+            PREFIX URN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/#>
+            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+            SELECT ?Name
+            WHERE
+            {
+                URN:''' + nn_model_name + ''' URN:model_name ?Name .
+                URN:''' + nn_model_name + ''' URN:active true  .
+            }
+            ''')
+
+        for item in q:
+            nn_model_name = item[0]
+            print(nn_model_name)
+
+        full_path_nn_model = os.path.join(path_nn, nn_model_name + ".h5")
+        print(full_path_nn_model)
+        # result = test_nn(nn_model) #проверка нейросети
+        #
+        # if result:
+        #     relearn_nn(nn_model)  #обучение нейросети
+        # else:
+        #     name,i_num = name.split("_")
+        #     name += "_{}".format(int(i_num)+1)
+        #     nn_model = os.path.join(path_nn, name + ".h5")
+        #     # обучение нейросети
+        #     learn_nn(nn_model)
+        #     change_status(name)
+
+    # Запись в базу знаний, сохранение
+    file = open("KB.n3", mode="wb")
+    file.write(g.serialize(format="n3"))
+    file.close()
+    # if input():
+    #     break
+
+    print("\033[36mГраф имеет {} триплетов!".format(len(g)))
+    # print("\033[35m {} !".format([i formula i in g.namespaces()]))
+    break

@@ -51,6 +51,7 @@ def learn_nn(nn_name,  # имя нейросетевой модели
             result[column] = values
         return result
 
+    print(input_names,output_names)
     def make_supervised(df):
         raw_in_data = df[input_names]
         raw_out_data = df[output_names]
@@ -81,7 +82,7 @@ def learn_nn(nn_name,  # имя нейросетевой модели
 
     test_x = in_data[round(columns * 0.8):]
     test_y = out_data[round(columns * 0.8):]
-
+    # print("type",number_of_layer,type(number_of_layer))
     print("\033[33m==========",
           len(input_names),
           (str(number_of_neurons) + ",") * number_of_layer,
@@ -133,15 +134,15 @@ def learn_nn(nn_name,  # имя нейросетевой модели
     # )
     #
 
-    # fit_results = model.fit(
-    #     x=train_x,
-    #     y=train_y,
-    #     epochs=epochs,
-    #     validation_split=0.2,
-    #     # callbacks=[early_stopping
-    #     #            ],
-    #     batch_size=32,
-    # )
+    fit_results = model.fit(
+        x=train_x,
+        y=train_y,
+        epochs=epochs,
+        validation_split=0.2,
+        # callbacks=[early_stopping
+        #            ],
+        batch_size=32,
+    )
 
 
     model.save(nn_name)#сохранение полученной нейросетевой модели

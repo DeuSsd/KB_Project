@@ -3,35 +3,41 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix formulas: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/formulas/#> .
-
+@prefix NN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/NN/#> .
 
 MyBase:formula a rdf:Property .
 
 formulas:formula_name a rdf:Property .
-formulas:parametrs a rdf:Property .
+formulas:numparam a rdf:Property .
+formulas:exit_param a rdf:Property .
 
 formulas:formula a rdfs:Class ;
-    rdfs:domain formulas:parametrs ;
+    rdfs:domain formulas:exit_param ;
+    rdfs:domain formulas:numparam ;
     rdfs:domain formulas:formula_name .
 
 formulas:plus_formula a formulas:formula ;
     formulas:formula_name "plus" ;
     formulas:numparam 2 ;
+    formulas:exit_param "result";
     rdf:_1 "x";
     rdf:_2 "y".
+
+
+formulas:linear_formula a formulas:formula ;
+    formulas:formula_name "linear" ;
+    formulas:numparam 3 ;
+    formulas:exit_param "y";
+    rdf:_1 "x";
+    rdf:_2 "b";
+    rdf:_3 "c".
 
 MyBase:NN_model a rdfs:Class ;
     MyBase:base_model_name "Model_" ;
     MyBase:path "U:\\7 семестр\\pythonProject\\Models" ;
     rdfs:domain MyBase:model_name .
 
-MyBase:Predicate_Model_1 a MyBase:NN_Model ;
-    MyBase:active true ;
-    MyBase:model_name "Model_2" .
 
-MyBase:Predicate_Model_2 a MyBase:NN_Model ;
-    MyBase:active true ;
-    MyBase:model_name "Model_2" .
 
 MyBase:Primary_Rectification a MyBase:process .
 
@@ -135,7 +141,7 @@ MyBase:Bake a MyBase:hardware ;
     MyBase:raw_material MyBase:Topped_Oil ;
     MyBase:result MyBase:Heated_Topped_Oil ;
     MyBase:source MyBase:Pump_2 ;
-    MyBase:formula MyBase:plus_formula.
+    MyBase:formula NN:linear_formula.
 
 MyBase:ELDP a MyBase:hardware ;
     MyBase:clearing MyBase:Crude_Oil ;
@@ -210,4 +216,22 @@ MyBase:Crude_Oil a MyBase:status_of_oil ;
     MyBase:source MyBase:Storage .
 
 MyBase:hardware a rdfs:Class .
+
+
+NN:number_of_neurons a rdf:Property.
+NN:number_of_layers a rdf:Property.
+
+
+
+NN:nn_model a rdfs:Class;
+        rdfs:domain NN:number_of_neurons;
+        rdfs:domain NN:number_of_layers.
+
+NN:base_parametrs_nn_model a NN:model;
+        NN:number_of_neurons   10;
+        NN:number_of_layer     2.
+
+NN:best_parametrs_nn_model a NN:model;
+        NN:number_of_neurons   10;
+        NN:number_of_layer     2.
 
