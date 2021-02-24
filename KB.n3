@@ -63,6 +63,8 @@ MyBase:min_pressure a rdf:Property .
 
 MyBase:min_temp a rdf:Property .
 
+MyBase:name a rdf:Property .
+
 MyBase:path a rdf:Property .
 
 MyBase:purpose a rdf:Property .
@@ -112,6 +114,7 @@ MyBase:LightWeight_Сolumn a MyBase:hardware ;
     MyBase:condensation MyBase:Petrol_Fraction ;
     MyBase:max_temp 180 ;
     MyBase:min_temp 30 ;
+    MyBase:name "Легкофракционная колонна" ;
     MyBase:purpose MyBase:The_output_of_gasoline,
         MyBase:The_output_of_hydrocarbon_gases ;
     MyBase:raw_material MyBase:Light_Fraction_Vapors ;
@@ -125,6 +128,7 @@ MyBase:Petrol_Сolumn a MyBase:hardware ;
     MyBase:condensation MyBase:Petrol_Fraction ;
     MyBase:max_temp 180 ;
     MyBase:min_temp 30 ;
+    MyBase:name "Бензиновая колонна" ;
     MyBase:purpose MyBase:The_output_of_gasoline,
         MyBase:The_output_of_hydrocarbon_gases ;
     MyBase:raw_material MyBase:Gasoline_Vapors ;
@@ -133,6 +137,7 @@ MyBase:Petrol_Сolumn a MyBase:hardware ;
     MyBase:source MyBase:Topping_Сolumn .
 
 MyBase:Pump_1 a MyBase:hardware ;
+    MyBase:name "Насос 1" ;
     MyBase:purpose MyBase:Heat_Exchanger_1 ;
     MyBase:raw_material MyBase:Crude_Oil ;
     MyBase:source MyBase:Storage ;
@@ -156,6 +161,7 @@ MyBase:Atmospheric_Pipe_Heater a MyBase:hardware ;
     MyBase:max_temp 355 ;
     MyBase:min_pressure 0.15 ;
     MyBase:min_temp 340 ;
+    MyBase:name "Атмосферный трубчатый нагреватель" ;
     MyBase:purpose MyBase:LightWeight_Сolumn,
         MyBase:The_output_of_diesel,
         MyBase:The_output_of_kerosene,
@@ -173,15 +179,17 @@ MyBase:Bake a MyBase:hardware ;
     MyBase:heating MyBase:Topped_Oil ;
     MyBase:max_temp 350 ;
     MyBase:min_temp 340 ;
-    MyBase:purpose MyBase:Atmospheric_Pipe_Heater ;
+    MyBase:name "Печь" ;
+        MyBase:purpose MyBase:Atmospheric_Pipe_Heater ;
     MyBase:raw_material MyBase:Topped_Oil ;
-    MyBase:result MyBase:Heated_Topped_Oil ;
+        MyBase:result MyBase:Heated_Topped_Oil ;
     MyBase:source MyBase:Pump_2 .
 
 MyBase:ELDP a MyBase:hardware ;
     MyBase:clearing MyBase:Crude_Oil ;
     MyBase:max_temp 5 ;
     MyBase:min_temp 3 ;
+    MyBase:name "(ЭЛОУ) электрообессоливающая установка" ;
     MyBase:purpose MyBase:Heat_Exchanger_2 ;
     MyBase:raw_material MyBase:Crude_Oil ;
     MyBase:result MyBase:Desalted_Crude_Oil ;
@@ -191,6 +199,7 @@ MyBase:Heat_Exchanger_1 a MyBase:hardware ;
     MyBase:heating MyBase:Crude_Oil ;
     MyBase:max_temp 50 ;
     MyBase:min_temp 30 ;
+    MyBase:name "Теплообменник 1" ;
     MyBase:purpose MyBase:ELDP ;
     MyBase:raw_material MyBase:Crude_Oil ;
     MyBase:result MyBase:Heated_Crude_Oil ;
@@ -200,6 +209,7 @@ MyBase:Heat_Exchanger_2 a MyBase:hardware ;
     MyBase:heating MyBase:Desalted_Crude_Oil ;
     MyBase:max_temp 220 ;
     MyBase:min_temp 200 ;
+    MyBase:name "Теплообменник 2" ;
     MyBase:purpose MyBase:Topping_Сolumn ;
     MyBase:raw_material MyBase:Desalted_Crude_Oil ;
     MyBase:result MyBase:Heated_Desalted_Crude_Oil ;
@@ -210,12 +220,14 @@ MyBase:Hydrocarbon_Gases a MyBase:oil_product .
 MyBase:Light_Fraction_Vapors a MyBase:oil_product .
 
 MyBase:Pump_2 a MyBase:hardware ;
+    MyBase:name "Насос 2" ;
     MyBase:purpose MyBase:Bake ;
     MyBase:raw_material MyBase:Topped_Oil ;
     MyBase:source MyBase:Topping_Сolumn ;
     MyBase:transfer MyBase:Topped_Oil .
 
 MyBase:Storage a MyBase:hardware ;
+    MyBase:name "Хранилище" ;
     MyBase:raw_material MyBase:Crude_Oil ;
     MyBase:storage_object MyBase:Crude_Oil .
 
@@ -227,6 +239,7 @@ MyBase:Topping_Сolumn a MyBase:hardware ;
     MyBase:max_temp 260 ;
     MyBase:min_pressure 0.4 ;
     MyBase:min_temp 240 ;
+    MyBase:name "Отбензиннивающая колонна" ;
     MyBase:purpose MyBase:Petrol_Сolumn,
         MyBase:Pump_2 ;
     MyBase:raw_material MyBase:Desalted_Crude_Oil,
