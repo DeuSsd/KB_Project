@@ -22,7 +22,7 @@ def learn_nn(nn_name,  # имя нейросетевой модели
     # activation="tanh"
     activation = "relu"
 
-    epochs = 10
+    epochs = 40
 
     # seed()
     data_frame = pd.read_csv(dataset_name)

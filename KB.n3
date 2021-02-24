@@ -39,6 +39,10 @@ MyBase:Predicate_Model_3 a MyBase:NN_Model ;
     MyBase:active true ;
     MyBase:model_name "Model_3" .
 
+MyBase:Predicate_Model_4 a MyBase:NN_Model ;
+    MyBase:active true ;
+    MyBase:model_name "Model_4" .
+
 MyBase:Primary_Rectification a MyBase:process .
 
 MyBase:Secondary_Rectification a MyBase:process .
@@ -180,9 +184,9 @@ MyBase:Bake a MyBase:hardware ;
     MyBase:max_temp 350 ;
     MyBase:min_temp 340 ;
     MyBase:name "Печь" ;
-        MyBase:purpose MyBase:Atmospheric_Pipe_Heater ;
+    MyBase:purpose MyBase:Atmospheric_Pipe_Heater ;
     MyBase:raw_material MyBase:Topped_Oil ;
-        MyBase:result MyBase:Heated_Topped_Oil ;
+    MyBase:result MyBase:Heated_Topped_Oil ;
     MyBase:source MyBase:Pump_2 .
 
 MyBase:ELDP a MyBase:hardware ;

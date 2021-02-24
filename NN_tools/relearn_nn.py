@@ -12,7 +12,7 @@ def relearn_nn(nn_name,  # имя нейросетевой модели
     print(nn_name)
     model = k.models.load_model(nn_name)
 
-    epochs = 10
+    epochs = 40
 
     data_frame = pd.read_csv(dataset_name)
 
