@@ -258,5 +258,6 @@ paket-files/
 *.bin
 Test.py
 __pycache__/
-*.docx
+*.docx1
 *.drawio
+/data.csv

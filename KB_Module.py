@@ -19,12 +19,14 @@ print("\033[36mГраф имеет {} триплетов!".format(len(g)))
 path_nn = ''
 q = g.query(
     '''
-    PREFIX URN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/#>
+    PREFIX NN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/NN/#>
     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    
     SELECT ?path_model
+    
     WHERE
     {
-        URN:NN_model URN:path ?path_model .
+        NN:NN_model NN:path ?path_model .
     }
     ''')
 
@@ -41,28 +43,28 @@ def convert_dict_to_ilst(dict_parametrs):
     return list_parametrs
 
 def add_new_nn_to_KB(new_name):
-    MyBase = Namespace('file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/#')
-    g.bind("MyBase", MyBase)
+    NN = Namespace('file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/NN/#')
+    g.bind("NN", NN)
     new_name = new_name.split("\\")[-1].split(".")[0]
-    new_obj = MyBase[:-1] + "Predicate_" + new_name
-    g.add((new_obj, RDF.type, MyBase.NN_Model))
+    new_obj = NN[:-1] + "Predicate_" + new_name
+    g.add((new_obj, RDF.type, NN.NN_Model))
     print("\033[36mГраф имеет {} триплетов!".format(len(g)))
-    g.add((new_obj, MyBase.model_name, Literal(new_name)))
+    g.add((new_obj, NN.model_name, Literal(new_name)))
     print("\033[36mГраф имеет {} триплетов!".format(len(g)))
-    g.add((new_obj, MyBase.active, Literal(True)))
+    g.add((new_obj, NN.active, Literal(True)))
     print("\033[36mГраф имеет {} триплетов!".format(len(g)))
 
 
 # Изменение статуса
 def change_status(new_name):
-    # MyBase = URIRef(":")
-    MyBase = Namespace('file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/#')
-    g.bind("MyBase", MyBase)
-    g.set((MyBase.Predicate_Model_1, RDF.type, MyBase.NN_Model))
+    # NN = URIRef(":")
+    NN = Namespace('file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/NN/#')
+    g.bind("NN", NN)
+    g.set((NN.Predicate_Model_1, RDF.type, NN.NN_Model))
     # print("\033[36mГраф имеет {} триплетов!".format(len(g)))
-    g.set((MyBase.Predicate_Model_1, MyBase.active, Literal(True)))
+    g.set((NN.Predicate_Model_1, NN.active, Literal(True)))
     # print("\033[36mГраф имеет {} триплетов!".format(len(g)))
-    g.set((MyBase.Predicate_Model_1, MyBase.model_name, Literal(new_name)))
+    g.set((NN.Predicate_Model_1, NN.model_name, Literal(new_name)))
     # print("\033[36mГраф имеет {} триплетов!".format(len(g)))
     add_new_nn_to_KB(new_name)
 
@@ -101,13 +103,13 @@ picked_system = hardware_list[number_of_picked_system][0]
 
 q = g.query(
     '''
-    PREFIX URN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/#>
+    PREFIX MyBase: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/#>
     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 
     SELECT ?param_formula
     WHERE
     {
-        URN:'''+picked_system+''' URN:formula ?param_formula .
+        MyBase:'''+picked_system+''' MyBase:formula ?param_formula .
     }
 ''')
 
@@ -221,14 +223,14 @@ while True:
     # узнаём есть ли нейросетевые модели в базе и если есть забираем последнюю
     q = g.query(
         '''
-        PREFIX URN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/#>
+        PREFIX NN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/NN/#>
         PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 
         SELECT ?instance
         WHERE
         {
-            ?instance a URN:NN_Model .
-            ?instance URN:active true .
+            ?instance a NN:NN_Model .
+            ?instance NN:active true .
         }
         ''')
 
@@ -241,15 +243,55 @@ while True:
     result = False
     base_nn_model_name = ""
     nn_model_name = ""
+
+    # Удаление лишних знаний
+    if len(q) != 0 and not os.path.isfile(path_nn):
+        print("\03336mГраф имеет {} триплетов!\n"
+              "Удаление лишних знаний".format(len(g)))
+
+        q = g.query(
+            '''
+            PREFIX NN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/NN/#>
+            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+            
+            SELECT ?instance
+            
+            WHERE
+            {
+                ?instance a NN:NN_Model.
+            }
+            ''')
+        for name in q:
+            g.remove((name[0], None, None))
+            print("\033[36mГраф имеет {} триплетов!".format(len(g)))
+
+
+
+
+    # Запрос готовых нейросетевых моделей
+    q = g.query(
+        '''
+        PREFIX NN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/NN/#>
+        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+        SELECT ?instance
+        WHERE
+        {
+            ?instance a NN:NN_Model .
+            ?instance NN:active true .
+        }
+        ''')
+
+
     if len(q) == 0:
         print("нейросетевой модели нет")
         q = g.query(
             '''
-            PREFIX URN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/#>
+            PREFIX NN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/NN/#>
             SELECT ?model_name
             WHERE
             {
-                URN:NN_model URN:base_model_name ?model_name.
+                NN:NN_model NN:base_model_name ?model_name.
             }
             '''
         )
@@ -301,14 +343,14 @@ while True:
 
         q = g.query(
             '''
-            PREFIX URN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/#>
+            PREFIX NN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/NN/#>
             PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 
             SELECT ?Name
             WHERE
             {
-                URN:''' + nn_model_name + ''' URN:model_name ?Name .
-                URN:''' + nn_model_name + ''' URN:active true  .
+                NN:''' + nn_model_name + ''' NN:model_name ?Name .
+                NN:''' + nn_model_name + ''' NN:active true  .
             }
             ''')
 
@@ -318,6 +360,7 @@ while True:
 
         full_path_nn_model = os.path.join(path_nn, nn_model_name + ".h5")
         print(full_path_nn_model)
+
 
         accuracy = test_nn(
                     full_path_nn_model,
@@ -385,6 +428,7 @@ while True:
     file = open("KB.n3", mode="wb")
     file.write(g.serialize(format="n3"))
     file.close()
+
     # if input():
     #     break
 
@@ -392,14 +436,16 @@ while True:
     # # print("\033[35m {} !".format([i formula i in g.namespaces()]))
     break
 
+# ################################
+
 q = g.query('''
-            PREFIX URN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/#>
+            PREFIX MyBase: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/#>
             PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 
             SELECT ?p ?s
             WHERE
             {
-                URN:'''+picked_system+''' ?p ?s.
+                MyBase:'''+picked_system+''' ?p ?s.
             }
 ''')
 
