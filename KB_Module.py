@@ -199,7 +199,7 @@ ims(
 q = g.query('''
         PREFIX NN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/NN/#>
         PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-        SELECT ?num_n ?num_l 
+        SELECT ?num_n ?num_l
         WHERE
         {
             NN:base_parametrs_nn_model NN:number_of_neurons ?num_n .
@@ -369,9 +369,9 @@ while True:
                     )
 
                     print(number_of_neurons, number_of_layer, accuracy)
-                    if number_of_neurons < 0:
+                    if number_of_neurons < 100:
                         number_of_neurons += 1
-                    elif number_of_layer < 0:
+                    elif number_of_layer < 20:
                         number_of_layer += 1
                     else:
                         break
@@ -405,3 +405,4 @@ q = g.query('''
 
 for p,s in q:
     print(p.split("#")[-1],s)
+

@@ -1,43 +1,51 @@
 @prefix MyBase: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/#> .
+@prefix NN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/NN/#> .
+@prefix formulas: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/formulas/#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix formulas: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/formulas/#> .
-@prefix NN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/NN/#> .
-
-MyBase:formula a rdf:Property .
-
-formulas:formula_name a rdf:Property .
-formulas:numparam a rdf:Property .
-formulas:exit_param a rdf:Property .
-
-formulas:formula a rdfs:Class ;
-    rdfs:domain formulas:exit_param ;
-    rdfs:domain formulas:numparam ;
-    rdfs:domain formulas:formula_name .
-
-formulas:plus_formula a formulas:formula ;
-    formulas:formula_name "plus" ;
-    formulas:numparam 2 ;
-    formulas:exit_param "result";
-    rdf:_1 "x";
-    rdf:_2 "y".
-
-
-formulas:linear_formula a formulas:formula ;
-    formulas:formula_name "linear" ;
-    formulas:numparam 3 ;
-    formulas:exit_param "y";
-    rdf:_1 "x";
-    rdf:_2 "b";
-    rdf:_3 "c".
 
 MyBase:NN_model a rdfs:Class ;
     MyBase:base_model_name "Model_" ;
     MyBase:path "U:\\7 семестр\\pythonProject\\Models" ;
     rdfs:domain MyBase:model_name .
 
+MyBase:hardware a rdfs:Class .
 
+MyBase:oil_product a rdfs:Class .
+
+MyBase:process a rdfs:Class .
+
+MyBase:status_of_oil a rdfs:Class .
+
+NN:nn_model a rdfs:Class ;
+    rdfs:domain NN:number_of_layers,
+        NN:number_of_neurons .
+
+formulas:formula a rdfs:Class ;
+    rdfs:domain formulas:exit_param,
+        formulas:formula_name,
+        formulas:numparam .
+
+MyBase:Predicate_Model_1 a MyBase:NN_Model ;
+    MyBase:active true ;
+    MyBase:model_name "Model_1" .
+
+MyBase:Predicate_Model_2 a MyBase:NN_Model ;
+    MyBase:active true ;
+    MyBase:model_name "Model_2" .
+
+MyBase:Predicate_Model_3 a MyBase:NN_Model ;
+    MyBase:active true ;
+    MyBase:model_name "Model_3" .
+
+MyBase:Predicate_Model_4 a MyBase:NN_Model ;
+    MyBase:active true ;
+    MyBase:model_name "Model_4" .
+
+MyBase:Predicate_Model_5 a MyBase:NN_Model ;
+    MyBase:active true ;
+    MyBase:model_name "Model_5" .
 
 MyBase:Primary_Rectification a MyBase:process .
 
@@ -51,6 +59,8 @@ MyBase:clearing a MyBase:process .
 
 MyBase:condensation a MyBase:process .
 
+MyBase:formula a rdf:Property .
+
 MyBase:heating a MyBase:process .
 
 MyBase:max_pressure a rdf:Property .
@@ -60,6 +70,8 @@ MyBase:max_temp a rdf:Property .
 MyBase:min_pressure a rdf:Property .
 
 MyBase:min_temp a rdf:Property .
+
+MyBase:name a rdf:Property .
 
 MyBase:path a rdf:Property .
 
@@ -77,6 +89,29 @@ MyBase:storage_object a MyBase:process,
 MyBase:transfer a MyBase:process,
         rdf:Property .
 
+NN:base_parametrs_nn_model a NN:model ;
+    NN:number_of_layer 4 ;
+    NN:number_of_neurons 40 .
+
+NN:best_parametrs_nn_model a NN:model ;
+    NN:number_of_layer 2 ;
+    NN:number_of_neurons 10 .
+
+formulas:linear_formula a formulas:formula ;
+    formulas:exit_param "y" ;
+    formulas:formula_name "linear" ;
+    formulas:numparam 3 ;
+    rdf:_1 "x" ;
+    rdf:_2 "b" ;
+    rdf:_3 "c" .
+
+formulas:plus_formula a formulas:formula ;
+    formulas:exit_param "result" ;
+    formulas:formula_name "plus" ;
+    formulas:numparam 2 ;
+    rdf:_1 "x" ;
+    rdf:_2 "y" .
+
 MyBase:Diesel_Fuel a MyBase:oil_product .
 
 MyBase:Heated_Crude_Oil a MyBase:status_of_oil .
@@ -87,6 +122,7 @@ MyBase:LightWeight_Сolumn a MyBase:hardware ;
     MyBase:condensation MyBase:Petrol_Fraction ;
     MyBase:max_temp 180 ;
     MyBase:min_temp 30 ;
+    MyBase:name "Легкофракционная колонна" ;
     MyBase:purpose MyBase:The_output_of_gasoline,
         MyBase:The_output_of_hydrocarbon_gases ;
     MyBase:raw_material MyBase:Light_Fraction_Vapors ;
@@ -100,6 +136,7 @@ MyBase:Petrol_Сolumn a MyBase:hardware ;
     MyBase:condensation MyBase:Petrol_Fraction ;
     MyBase:max_temp 180 ;
     MyBase:min_temp 30 ;
+    MyBase:name "Бензиновая колонна" ;
     MyBase:purpose MyBase:The_output_of_gasoline,
         MyBase:The_output_of_hydrocarbon_gases ;
     MyBase:raw_material MyBase:Gasoline_Vapors ;
@@ -108,6 +145,7 @@ MyBase:Petrol_Сolumn a MyBase:hardware ;
     MyBase:source MyBase:Topping_Сolumn .
 
 MyBase:Pump_1 a MyBase:hardware ;
+    MyBase:name "Насос 1" ;
     MyBase:purpose MyBase:Heat_Exchanger_1 ;
     MyBase:raw_material MyBase:Crude_Oil ;
     MyBase:source MyBase:Storage ;
@@ -115,12 +153,23 @@ MyBase:Pump_1 a MyBase:hardware ;
 
 MyBase:model_name a rdf:Property .
 
+NN:number_of_layers a rdf:Property .
+
+NN:number_of_neurons a rdf:Property .
+
+formulas:exit_param a rdf:Property .
+
+formulas:formula_name a rdf:Property .
+
+formulas:numparam a rdf:Property .
+
 MyBase:Atmospheric_Pipe_Heater a MyBase:hardware ;
     MyBase:Secondary_Rectification MyBase:Heated_Topped_Oil ;
     MyBase:max_pressure 0.2 ;
     MyBase:max_temp 355 ;
     MyBase:min_pressure 0.15 ;
     MyBase:min_temp 340 ;
+    MyBase:name "Атмосферный трубчатый нагреватель" ;
     MyBase:purpose MyBase:LightWeight_Сolumn,
         MyBase:The_output_of_diesel,
         MyBase:The_output_of_kerosene,
@@ -134,19 +183,21 @@ MyBase:Atmospheric_Pipe_Heater a MyBase:hardware ;
     MyBase:source MyBase:Bake .
 
 MyBase:Bake a MyBase:hardware ;
+    MyBase:formula NN:linear_formula ;
     MyBase:heating MyBase:Topped_Oil ;
     MyBase:max_temp 350 ;
     MyBase:min_temp 340 ;
+    MyBase:name "Печь" ;
     MyBase:purpose MyBase:Atmospheric_Pipe_Heater ;
     MyBase:raw_material MyBase:Topped_Oil ;
     MyBase:result MyBase:Heated_Topped_Oil ;
-    MyBase:source MyBase:Pump_2 ;
-    MyBase:formula NN:linear_formula.
+    MyBase:source MyBase:Pump_2 .
 
 MyBase:ELDP a MyBase:hardware ;
     MyBase:clearing MyBase:Crude_Oil ;
     MyBase:max_temp 5 ;
     MyBase:min_temp 3 ;
+    MyBase:name "(ЭЛОУ) электрообессоливающая установка" ;
     MyBase:purpose MyBase:Heat_Exchanger_2 ;
     MyBase:raw_material MyBase:Crude_Oil ;
     MyBase:result MyBase:Desalted_Crude_Oil ;
@@ -156,6 +207,7 @@ MyBase:Heat_Exchanger_1 a MyBase:hardware ;
     MyBase:heating MyBase:Crude_Oil ;
     MyBase:max_temp 50 ;
     MyBase:min_temp 30 ;
+    MyBase:name "Теплообменник 1" ;
     MyBase:purpose MyBase:ELDP ;
     MyBase:raw_material MyBase:Crude_Oil ;
     MyBase:result MyBase:Heated_Crude_Oil ;
@@ -165,6 +217,7 @@ MyBase:Heat_Exchanger_2 a MyBase:hardware ;
     MyBase:heating MyBase:Desalted_Crude_Oil ;
     MyBase:max_temp 220 ;
     MyBase:min_temp 200 ;
+    MyBase:name "Теплообменник 2" ;
     MyBase:purpose MyBase:Topping_Сolumn ;
     MyBase:raw_material MyBase:Desalted_Crude_Oil ;
     MyBase:result MyBase:Heated_Desalted_Crude_Oil ;
@@ -175,12 +228,14 @@ MyBase:Hydrocarbon_Gases a MyBase:oil_product .
 MyBase:Light_Fraction_Vapors a MyBase:oil_product .
 
 MyBase:Pump_2 a MyBase:hardware ;
+    MyBase:name "Насос 2" ;
     MyBase:purpose MyBase:Bake ;
     MyBase:raw_material MyBase:Topped_Oil ;
     MyBase:source MyBase:Topping_Сolumn ;
     MyBase:transfer MyBase:Topped_Oil .
 
 MyBase:Storage a MyBase:hardware ;
+    MyBase:name "Хранилище" ;
     MyBase:raw_material MyBase:Crude_Oil ;
     MyBase:storage_object MyBase:Crude_Oil .
 
@@ -192,6 +247,7 @@ MyBase:Topping_Сolumn a MyBase:hardware ;
     MyBase:max_temp 260 ;
     MyBase:min_pressure 0.4 ;
     MyBase:min_temp 240 ;
+    MyBase:name "Отбензиннивающая колонна" ;
     MyBase:purpose MyBase:Petrol_Сolumn,
         MyBase:Pump_2 ;
     MyBase:raw_material MyBase:Desalted_Crude_Oil,
@@ -204,34 +260,10 @@ MyBase:Desalted_Crude_Oil a MyBase:status_of_oil .
 
 MyBase:Topped_Oil a MyBase:status_of_oil .
 
-MyBase:status_of_oil a rdfs:Class .
-
 MyBase:Petrol_Fraction a MyBase:oil_product .
-
-MyBase:oil_product a rdfs:Class .
-
-MyBase:process a rdfs:Class .
 
 MyBase:Crude_Oil a MyBase:status_of_oil ;
     MyBase:source MyBase:Storage .
 
-MyBase:hardware a rdfs:Class .
 
-
-NN:number_of_neurons a rdf:Property.
-NN:number_of_layers a rdf:Property.
-
-
-
-NN:nn_model a rdfs:Class;
-        rdfs:domain NN:number_of_neurons;
-        rdfs:domain NN:number_of_layers.
-
-NN:base_parametrs_nn_model a NN:model;
-        NN:number_of_neurons   10;
-        NN:number_of_layer     2.
-
-NN:best_parametrs_nn_model a NN:model;
-        NN:number_of_neurons   10;
-        NN:number_of_layer     2.
 
