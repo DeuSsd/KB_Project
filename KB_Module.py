@@ -15,6 +15,8 @@ for subj, pred, obj in g:
 
 print("\033[36mГраф имеет {} триплетов!".format(len(g)))
 
+
+
 # извлекаем путь к нейросетевым моделям
 path_nn = ''
 q = g.query(
@@ -245,10 +247,9 @@ while True:
     nn_model_name = ""
 
     # Удаление лишних знаний
-    if len(q) != 0 and not os.path.isfile(path_nn):
-        print("\03336mГраф имеет {} триплетов!\n"
+    if len(q) != 0 and len(os.listdir(path_nn)) == 0:
+        print("\033[36mГраф имеет {} триплетов!\n"
               "Удаление лишних знаний".format(len(g)))
-
         q = g.query(
             '''
             PREFIX NN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/NN/#>
@@ -412,14 +413,14 @@ while True:
                     )
 
                     print(number_of_neurons, number_of_layer, accuracy)
-                    if number_of_neurons < 100:
+                    if number_of_neurons < 40:
                         number_of_neurons += 1
-                    elif number_of_layer < 20:
+                    elif number_of_layer < 4:
                         number_of_layer += 1
                     else:
                         break
                 add_new_nn_to_KB(nn_model_name)
-                print(2,nn_model_name)
+                print(nn_model_name)
             else:
                 print(1)
                 change_status(nn_model_name)
@@ -451,4 +452,6 @@ q = g.query('''
 
 for p,s in q:
     print(p.split("#")[-1],s)
+
+
 
