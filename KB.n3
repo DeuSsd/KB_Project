@@ -13,7 +13,7 @@ MyBase:process a rdfs:Class .
 
 MyBase:status_of_oil a rdfs:Class .
 
-NN:NN_model a rdfs:Class ;
+NN:NN_Model a rdfs:Class ;
     NN:base_model_name "Model_" ;
     NN:path "U:\\7 семестр\\pythonProject\\Models" ;
     rdfs:domain NN:model_name .
@@ -47,11 +47,7 @@ MyBase:min_pressure a rdf:Property .
 
 MyBase:min_temp a rdf:Property .
 
-MyBase:model_name a rdf:Property .
-
 MyBase:name a rdf:Property .
-
-MyBase:path a rdf:Property .
 
 MyBase:purpose a rdf:Property .
 
@@ -87,25 +83,19 @@ NN:Predicate_Model_5 a NN:NN_Model ;
     NN:active true ;
     NN:model_name "Model_5" .
 
-NN:Predicate_Model_6 a NN:NN_Model ;
-    NN:active true ;
-    NN:model_name "Model_6" .
-
-NN:Predicate_Model_7 a NN:NN_Model ;
-    NN:active true ;
-    NN:model_name "Model_7" .
-
 NN:active a rdf:Property .
 
 NN:base_model_name a rdf:Property .
 
-NN:base_parametrs_nn_model a NN:model ;
+NN:base_parametrs_nn_model a NN:NN_Model ;
     NN:number_of_layer 4 ;
-    NN:number_of_neurons 40 .
+    NN:number_of_neurons 20 .
 
-NN:best_parametrs_nn_model a NN:model ;
+NN:best_parametrs_nn_model a NN:NN_Model ;
     NN:number_of_layer 2 ;
     NN:number_of_neurons 10 .
+
+NN:path a rdf:Property .
 
 formulas:linear_formula a formulas:formula ;
     formulas:exit_param "y" ;
@@ -163,6 +153,8 @@ MyBase:Pump_1 a MyBase:hardware ;
     MyBase:raw_material MyBase:Crude_Oil ;
     MyBase:source MyBase:Storage ;
     MyBase:transfer MyBase:Crude_Oil .
+
+NN:model_name a rdf:Property .
 
 NN:number_of_layers a rdf:Property .
 

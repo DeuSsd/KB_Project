@@ -17,12 +17,12 @@ def learn_nn(nn_name,  # имя нейросетевой модели
              number_of_neurons,  # количество нейронов в слое
              number_of_layer  # количество слоёв в нейросетевой модели
              ):
-    print(nn_name)
+    # print(nn_name)
     # activation="relu"
     # activation="tanh"
     activation = "relu"
 
-    epochs = 40
+    epochs = 10
 
     # seed()
     data_frame = pd.read_csv(dataset_name)
@@ -51,7 +51,7 @@ def learn_nn(nn_name,  # имя нейросетевой модели
             result[column] = values
         return result
 
-    print(input_names,output_names)
+    # print(input_names,output_names)
     def make_supervised(df):
         raw_in_data = df[input_names]
         raw_out_data = df[output_names]
@@ -75,7 +75,7 @@ def learn_nn(nn_name,  # имя нейросетевой модели
     in_data = np.array(encode(supervised["in"]))
     out_data = np.array(encode(supervised["out"]))
 
-    print(round(columns * 0.8))
+    # print(round(columns * 0.8))
 
     train_x = in_data[:round(columns * 0.8)]
     train_y = out_data[:round(columns * 0.8)]

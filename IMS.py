@@ -51,7 +51,7 @@ def ims(
         input_names,
         output_names
 ):
-    print(input_names,output_names)
+    # print(input_names,output_names)
     names = input_names+output_names
 
     data = []
@@ -68,5 +68,5 @@ def ims(
     with csv_file:
         writer = csv.writer(csv_file)
         writer.writerows(data)
-        print("Done")
+        print("\033[91mДанные подготовлены\033[36m")
     return None

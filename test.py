@@ -13,7 +13,7 @@ def test_nn(
         nn_name,  # имя нейросетевой модели
         input_names,  # список входных параметров
         output_names,  # список выходных параметров
-        funName,  # имя тестовой функции
+        # funName,  # имя тестовой функции
         dataset_name,  # название датасета .csv
 ):
     print(nn_name)
@@ -46,7 +46,7 @@ def test_nn(
             result[column] = values
         return result
 
-    print(input_names, output_names)
+    # print(input_names, output_names)
 
     def make_supervised(df):
         raw_in_data = df[input_names]

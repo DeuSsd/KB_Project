@@ -9,10 +9,10 @@ def relearn_nn(nn_name,  # имя нейросетевой модели
              output_names,  # список выходных параметров
              dataset_name,  # название датасета .csv
              ):
-    print(nn_name)
+    # print(nn_name)
     model = k.models.load_model(nn_name)
 
-    epochs = 40
+    epochs = 10
 
     data_frame = pd.read_csv(dataset_name)
 
@@ -58,7 +58,7 @@ def relearn_nn(nn_name,  # имя нейросетевой модели
     in_data = np.array(encode(supervised["in"]))
     out_data = np.array(encode(supervised["out"]))
 
-    print(round(columns * 0.8))
+    # print(round(columns * 0.8))
 
     train_x = in_data[:round(columns * 0.8)]
     train_y = out_data[:round(columns * 0.8)]
