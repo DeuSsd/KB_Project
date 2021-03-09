@@ -9,6 +9,8 @@ def relearn_nn(nn_name,  # имя нейросетевой модели
              output_names,  # список выходных параметров
              dataset_name,  # название датасета .csv
              ):
+    nn_name = nn_name[0]
+    dataset_name = dataset_name[0]
     # print(nn_name)
     model = k.models.load_model(nn_name)
 

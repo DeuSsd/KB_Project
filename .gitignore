@@ -256,7 +256,7 @@ paket-files/
 *.ico
 *.pem
 *.bin
-Test.py
+NN_tools/test_nn.py
 __pycache__/
 *.docx1
 *.drawio

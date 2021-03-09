@@ -17,6 +17,8 @@ def learn_nn(nn_name,  # имя нейросетевой модели
              number_of_neurons,  # количество нейронов в слое
              number_of_layer  # количество слоёв в нейросетевой модели
              ):
+    nn_name = nn_name[0]
+    dataset_name = dataset_name[0]
     # print(nn_name)
     # activation="relu"
     # activation="tanh"

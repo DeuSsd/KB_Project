@@ -1,9 +1,8 @@
 from rdflib import *
 from NN_tools import *
-from test import test_nn
+from NN_tools_execute import execute
 from IMS import ims
 import os
-
 
 ACCURACY = 0.0005
 
@@ -74,7 +73,7 @@ def change_status(new_name):
         WHERE
         {
             ?Name a NN:NN_Model .
-            ?Name NN:active true  .
+            ?Name NN:active true .
         }
            ''')
 
@@ -274,7 +273,7 @@ while True:
     # Удаление лишних знаний
     if len(q) != 0 and len(os.listdir(path_nn)) == 0:
         print("\033[36mГраф имеет {} триплетов!\n"
-              "Удаление лишних знаний".format(len(g)))
+        "Удаление лишних знаний".format(len(g)))
         q = g.query(
             '''
             PREFIX NN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/NN/#>
@@ -288,11 +287,30 @@ while True:
                     NN:active ?status .
             }
             ''')
+
         for name, status in q:
             g.remove((name, None, None))
             print("\033[36mГраф имеет {} триплетов!".format(len(g)))
 
+    # ---
+    # Запрос готовых нейросетевых моделей
+    q = g.query(
+        '''
+        PREFIX NN_tools: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/NN/NN_tools/#>
+        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 
+        SELECT ?instance ?action ?name
+        WHERE
+        {
+            ?instance a NN_tools:algorithm .
+            ?instance NN_tools:action ?action .
+            ?instance NN_tools:name ?name .
+        }
+    ''')
+
+    NN_tools = {}
+    for _, action, name in q:
+        NN_tools[name] = action
 
 
     # Запрос готовых нейросетевых моделей
@@ -307,11 +325,13 @@ while True:
             ?instance a NN:NN_Model .
             ?instance NN:active true .
         }
-        ''')
+    ''')
 
 
     if len(q) == 0:
+
         print("\033[95mнейросетевой модели нет\033[36m")
+
         q = g.query(
             '''
             PREFIX NN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/NN/#>
@@ -335,21 +355,37 @@ while True:
         accuracy = 0
         while accuracy < ACCURACY:
 
-            learn_nn.learn_nn(
+            # learn_nn.learn_nn(
+            #     nn_model_name,
+            #     input_names,
+            #     output_names,
+            #     "data.csv",
+            #     number_of_neurons,
+            #     number_of_layer
+            # )
+            execute("learn_nn", [
                 nn_model_name,
                 input_names,
                 output_names,
-                "data.csv",
+                ["data.csv"],
                 number_of_neurons,
                 number_of_layer
-            )
+            ])
 
-            accuracy = test_nn(
-                nn_model_name,
+            accuracy = execute(
+                "test_nn",[
+                [nn_model_name],
                 input_names,
                 output_names,
-                "data.csv"
-            )
+                ["data.csv"]
+            ])
+            # accuracy = test_nn(
+            #     nn_model_name,
+            #     input_names,
+            #     output_names,
+            #     "data.csv"
+            # )
+
             print("\033[95mКоличество внутренних слоёв - {}\n"
                   "Количество нейронов в каждом внутреннем слое - {}\n"
                   "Текущая точность прогностической модели - {}\033[36m".format(number_of_layer, number_of_neurons,
@@ -393,31 +429,52 @@ while True:
         # print(full_path_nn_model)
 
 
-        accuracy = test_nn(
-                    full_path_nn_model,
-                    input_names,
-                    output_names,
-                    "data.csv"
-                ) #проверка нейросети
+        # accuracy = test_nn(
+        #             full_path_nn_model,
+        #             input_names,
+        #             output_names,
+        #             "data.csv"
+        #         )
+        accuracy = execute(
+            "test_nn",[
+                [full_path_nn_model],
+                input_names,
+                output_names,
+                [ "data.csv"]
+            ])
+        #         #проверка нейросети
 
         print("\033[95mКолличество внутренних слоёв - {}\n"
               "Количество нейронов в каждом внутреннем слое - {}\n"
               "Текущая точность прогностической модели - {}\033[36m".format(number_of_layer, number_of_neurons,accuracy))
 
         if accuracy < ACCURACY:
-            relearn_nn.relearn_nn(
-                full_path_nn_model,
-                input_names,
-                output_names,
-                "data.csv"
-            )
-
-            accuracy = test_nn(
-                full_path_nn_model,
-                input_names,
-                output_names,
-                "data.csv"
-            )  # проверка нейросети
+            # relearn_nn.relearn_nn(
+            #     full_path_nn_model,
+            #     input_names,
+            #     output_names,
+            #     "data.csv"
+            # )
+            execute(
+                "relearn_nn", [
+                    [full_path_nn_model],
+                    input_names,
+                    output_names,
+                    ["data.csv"]
+            ])
+            # accuracy = test_nn(
+            #     full_path_nn_model,
+            #     input_names,
+            #     output_names,
+            #     "data.csv"
+            # )  # проверка нейросети
+            accuracy = execute(
+                "test_nn", [
+                    [full_path_nn_model],
+                    input_names,
+                    output_names,
+                    ["data.csv"]
+                ])
 
             print("\033[95mКолличество внутренних слоёв - {}\n"
                   "Колличество нейронов в каждом внутреннем слое - {}\n"
@@ -431,22 +488,36 @@ while True:
                 accuracy = 0
                 while accuracy < ACCURACY:
 
-                    learn_nn.learn_nn(
-                        nn_model_name,
+                    # learn_nn.learn_nn(
+                    #     nn_model_name,
+                    #     input_names,
+                    #     output_names,
+                    #     "data.csv",
+                    #     number_of_neurons,
+                    #     number_of_layer
+                    # )
+                    execute("learn_nn", [
+                        [nn_model_name],
                         input_names,
                         output_names,
-                        "data.csv",
+                        ["data.csv"],
                         number_of_neurons,
                         number_of_layer
-                    )
-
-                    accuracy = test_nn(
-                        nn_model_name,
-                        input_names,
-                        output_names,
-                        "data.csv"
-                    )
-
+                    ])
+                    #
+                    # accuracy = test_nn(
+                    #     nn_model_name,
+                    #     input_names,
+                    #     output_names,
+                    #     "data.csv"
+                    # )
+                    accuracy = execute(
+                        "test_nn", [
+                            [nn_model_name],
+                            input_names,
+                            output_names,
+                            ["data.csv"]
+                        ])
                     print("\033[95mКоличество внутренних слоёв - {}\n"
                           "Количество нейронов в каждом внутреннем слое - {}\n"
                           "Текущая точность прогностической модели - {}\033[36m".format(number_of_layer,
@@ -462,7 +533,7 @@ while True:
                 change_status(nn_model_name)
                 print("\033[95mНовая прогностическая модель - {}\033[36m".format(name))
             else:
-                print(1)
+                # print(1)
                 change_status(nn_model_name)
 
 
