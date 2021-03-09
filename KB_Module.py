@@ -4,6 +4,9 @@ from test import test_nn
 from IMS import ims
 import os
 
+
+ACCURACY = 0.0005
+
 g = Graph()
 file = open("KB.n3", "rb")
 result = g.parse(source="KB.n3", format="n3")
@@ -320,7 +323,7 @@ while True:
         # print(nn_model_name)
         # обучение нейросети
         accuracy = 0
-        while accuracy < 0.3:
+        while accuracy < ACCURACY:
 
             learn_nn.learn_nn(
                 nn_model_name,
@@ -391,7 +394,7 @@ while True:
               "Количество нейронов в каждом внутреннем слое - {}\n"
               "Текущая точность прогностической модели - {}\033[36m".format(number_of_layer, number_of_neurons,accuracy))
 
-        if accuracy < 0.3:
+        if accuracy < ACCURACY:
             relearn_nn.relearn_nn(
                 full_path_nn_model,
                 input_names,
@@ -407,7 +410,7 @@ while True:
             )  # проверка нейросети
 
             print("\033[95mКолличество внутренних слоёв - {}\n"
-                  "Колличество нейронов в каждом внутреннем слое - {}"
+                  "Колличество нейронов в каждом внутреннем слое - {}\n"
                   "Текущая точность прогностической модели - {}\033[36m".format(number_of_layer, number_of_neurons,
                                                                                 accuracy))
             if accuracy < 0.3:
@@ -416,7 +419,7 @@ while True:
                 nn_model_name = os.path.join(path_nn, name + ".h5")
                 # обучение нейросети
                 accuracy = 0
-                while accuracy < 0.3:
+                while accuracy < ACCURACY:
 
                     learn_nn.learn_nn(
                         nn_model_name,
