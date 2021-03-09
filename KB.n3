@@ -64,24 +64,28 @@ MyBase:transfer a MyBase:process,
         rdf:Property .
 
 NN:Predicate_Model_1 a NN:NN_Model ;
-    NN:active true ;
+    NN:active false ;
     NN:model_name "Model_1" .
 
 NN:Predicate_Model_2 a NN:NN_Model ;
-    NN:active true ;
+    NN:active false ;
     NN:model_name "Model_2" .
 
 NN:Predicate_Model_3 a NN:NN_Model ;
-    NN:active true ;
+    NN:active false ;
     NN:model_name "Model_3" .
 
 NN:Predicate_Model_4 a NN:NN_Model ;
-    NN:active true ;
+    NN:active false ;
     NN:model_name "Model_4" .
 
 NN:Predicate_Model_5 a NN:NN_Model ;
-    NN:active true ;
+    NN:active false ;
     NN:model_name "Model_5" .
+
+NN:Predicate_Model_6 a NN:NN_Model ;
+    NN:active true ;
+    NN:model_name "Model_6" .
 
 NN:active a rdf:Property .
 

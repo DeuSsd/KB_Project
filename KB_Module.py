@@ -19,7 +19,6 @@ for subj, pred, obj in g:
 print("\n\033[36mГраф имеет {} триплетов!\033[36m".format(len(g)))
 
 
-
 # извлекаем путь к нейросетевым моделям
 path_nn = ''
 q = g.query(
@@ -66,15 +65,26 @@ def add_new_nn_to_KB(new_name):
 
 # Изменение статуса
 def change_status(new_name):
-    # NN = URIRef(":")
-    NN = Namespace('file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/NN/#')
-    g.bind("NN", NN)
-    g.set((NN.Predicate_Model_1, RDF.type, NN.NN_Model))
-    # print("\033[36mГраф имеет {} триплетов!".format(len(g)))
-    g.set((NN.Predicate_Model_1, NN.active, Literal(True)))
-    # print("\033[36mГраф имеет {} триплетов!".format(len(g)))
-    g.set((NN.Predicate_Model_1, NN.model_name, Literal(new_name)))
-    # print("\033[36mГраф имеет {} триплетов!".format(len(g)))
+    q = g.query(
+        '''
+        PREFIX NN: <file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/NN/#>
+        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+        SELECT ?Name
+        WHERE
+        {
+            ?Name a NN:NN_Model .
+            ?Name NN:active true  .
+        }
+           ''')
+
+    for Name_Model in q:
+        nn_model_name = item[0]
+        # NN = URIRef(":")
+        NN = Namespace('file:///U:/7%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/pythonProject/MyBase/NN/#')
+        g.bind("NN", NN)
+        g.set((Name_Model[0], NN.active, Literal(False)))
+
     add_new_nn_to_KB(new_name)
 
     # Запись в базу знаний, сохранение
@@ -353,8 +363,8 @@ while True:
                 break
 
         print("\033[95mПрогностическая модель - {}\033[36m".format(base_nn_model_name))
-        add_new_nn_to_KB(nn_model_name)
-
+        # add_new_nn_to_KB(nn_model_name)
+        change_status(nn_model_name)
     else:
         print("\033[95mнейросетевая модель есть\033[36m")
         # print(len(q))
@@ -413,7 +423,7 @@ while True:
                   "Колличество нейронов в каждом внутреннем слое - {}\n"
                   "Текущая точность прогностической модели - {}\033[36m".format(number_of_layer, number_of_neurons,
                                                                                 accuracy))
-            if accuracy < 0.3:
+            if accuracy < ACCURACY:
                 name,i_num = nn_model_name.split("_")
                 name += "_{}".format(int(i_num)+1)
                 nn_model_name = os.path.join(path_nn, name + ".h5")
@@ -448,8 +458,8 @@ while True:
                         number_of_layer += 1
                     else:
                         break
-                add_new_nn_to_KB(nn_model_name)
-
+                # add_new_nn_to_KB(nn_model_name)
+                change_status(nn_model_name)
                 print("\033[95mНовая прогностическая модель - {}\033[36m".format(name))
             else:
                 print(1)
